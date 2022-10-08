@@ -1,0 +1,681 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>JVM(一) | Barry Alen</title><meta name="keywords" content=".class,GC,JVM"><meta name="author" content="Barry Alen"><meta name="copyright" content="Barry Alen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM(一)">
+<meta property="og:url" content="http://example.com/2022/10/08/JVM-%E4%B8%80/index.html">
+<meta property="og:site_name" content="Barry Alen">
+<meta property="og:description" content="JVM">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/28/wallhaven-28pjo6.jpg">
+<meta property="article:published_time" content="2022-10-08T05:10:10.000Z">
+<meta property="article:modified_time" content="2022-10-08T05:18:46.475Z">
+<meta property="article:author" content="Barry Alen">
+<meta property="article:tag" content=".class">
+<meta property="article:tag" content="GC">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/28/wallhaven-28pjo6.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/10/08/JVM-%E4%B8%80/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'JVM(一)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-08 13:18:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/myfile/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/myfile/test.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/28/wallhaven-28pjo6.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Barry Alen</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/myfile/test.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JVM(一)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-08T05:10:10.000Z" title="发表于 2022-10-08 13:10:10">2022-10-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-08T05:18:46.475Z" title="更新于 2022-10-08 13:18:46">2022-10-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JVM(一)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="1、JVM基础"><a href="#1、JVM基础" class="headerlink" title="1、JVM基础"></a>1、JVM基础</h2><p><img src="/2022/10/08/JVM-%E4%B8%80/1.png" alt="image-20220925110713917"></p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/2.png" alt="image-20220925110752227"></p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/3.png" alt="image-20220925110822373"></p>
+<p>——————–JVM与java无关，只与**.class**文件有关</p>
+<p><strong>JVM是一种规范，它定义了java虚拟机应该执行什么，java虚拟机应该具备哪些模块，遇到哪些指令应该做什么等等</strong></p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/4.png" alt="image-20220925111215847"></p>
+<p>我们常用的是Hotspot：</p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/5.png" alt="image-20220925113617889"></p>
+<p>类编译，加载，初始化</p>
+<p>类加载过程</p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/6.png" alt="image-20220925130824497"></p>
+<p>注意Bootstrap是C++实现的，调用**getClassLoader()**方法会返回空，因为Jave中没有一个class和她对应，所以会返回null</p>
+<p>双亲委派：不是语法上的继承关系，即不是继承机制</p>
+<p>为什么需要双亲委派机制：安全问题，防止自己写的<strong>java.lang.string</strong>覆盖原生的</p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/7.png" alt="image-20220925132327032"></p>
+<p>每个加载器都有自己的缓存</p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/8.png" alt="image-20220925134458883"></p>
+<p>对于没有依赖关系的两个变量初始化，CPU可能会进行指令重排，所以需要加Volatile：</p>
+<h2 id="1-2-ClassFileFormat"><a href="#1-2-ClassFileFormat" class="headerlink" title="1.2 ClassFileFormat"></a>1.2 ClassFileFormat</h2><p><img src="/2022/10/08/JVM-%E4%B8%80/39.png" alt="image-20221004220136856"></p>
+<ul>
+<li>二进制字节流</li>
+<li>数据类型： u1，u2，u4，u8和 _info(表类型)      <strong>u1一个字节（无符号） u2俩个字节（无符号）以此类推</strong></li>
+</ul>
+<p>​	 	–	_info来源是hotspot源码中的写法</p>
+<ul>
+<li>查看16进制的ClassFile</li>
+</ul>
+<p>​		–	sublime &#x2F; notepad &#x2F;<br>​		–	IDEA插件-BinEd</p>
+<p>​		–	<img src="/2022/10/08/JVM-%E4%B8%80/38.png" alt="image-20221004215735612" style="zoom:67%;"></p>
+<ul>
+<li>有很多可以观察ByteCode的方法</li>
+</ul>
+<p>​		–	iavap<br>​		–	JBE -可以直接修改<br>​		–	JClassLib - IDEA插件之一</p>
+<p>​		–	<img src="/2022/10/08/JVM-%E4%B8%80/40.png" alt="image-20221004220452674" style="zoom:50%;"></p>
+<ul>
+<li><p>classfile构成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ClassFile &#123;</span><br><span class="line">    u4	magic;</span><br><span class="line">    u2	minor_version;</span><br><span class="line">    u	2major_version;</span><br><span class="line">    u2	constant_poo1_count;		//数组16，下标从1开始，0下标留着备用</span><br><span class="line">    cp_info constant_poo1[constant_poo1_count - 1];</span><br><span class="line">	u2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-3对象头包括什么"><a href="#1-3对象头包括什么" class="headerlink" title="1.3对象头包括什么"></a>1.3对象头包括什么</h2><p><img src="/2022/10/08/JVM-%E4%B8%80/41.png" alt="image-20221004221345407"></p>
+<ul>
+<li><p>mark word</p>
+<ul>
+<li><p>锁信息</p>
+</li>
+<li><p>GC</p>
+</li>
+<li><p>identity HasCode（没有重写的HasCode）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-4对象定位"><a href="#1-4对象定位" class="headerlink" title="1.4对象定位"></a>1.4对象定位</h2><img src="/2022/10/08/JVM-%E4%B8%80/42.png" alt="image-20221005091628138">
+
+<h2 id="1-5对象怎么分配"><a href="#1-5对象怎么分配" class="headerlink" title="1.5对象怎么分配"></a>1.5对象怎么分配</h2><ul>
+<li>优先存在栈上?（判断是否逃逸：没有引用指向她？）（<strong>不用GC，随着方法结束弹出栈，效率快，快</strong>） </li>
+<li>老年代（大对象）</li>
+<li>线程本地缓冲区（TLAB）</li>
+</ul>
+<p>​		–	ThreadLoacl  	（TL）</p>
+<p>​		–	AllocationBuffer	（AB）</p>
+<ul>
+<li>伊甸区</li>
+</ul>
+<p>​		–	<strong>线程的小小空间</strong>，<strong>每个线程自己的TLAB</strong>（3个线程抢位置，谁抢到给谁分配，算法为碰撞指针，总而言之，JVM得协调，这样会				消耗资源，<strong>与其这样，不如给每个线程一块小小空间（TLAB）</strong>）</p>
+<ul>
+<li><p>GC</p>
+</li>
+<li><p><strong>幸存区1，幸存区2，循环往复，直到年龄够大</strong></p>
+</li>
+<li><p>老年代</p>
+</li>
+<li><p>FullGC</p>
+</li>
+</ul>
+<h2 id="1-6一个Object占多少字节"><a href="#1-6一个Object占多少字节" class="headerlink" title="1.6一个Object占多少字节"></a>1.6一个Object占多少字节</h2><ul>
+<li><p>Object obj &#x3D; new Object();</p>
+<ul>
+<li>普通的对象new出来16个字节</li>
+</ul>
+</li>
+<li><p>mark word  8个字节</p>
+<ul>
+<li>默认压缩情况下classPointer 4个字节</li>
+</ul>
+</li>
+<li><p>对齐 4个字节</p>
+</li>
+</ul>
+<h2 id="1-7对象创建过程"><a href="#1-7对象创建过程" class="headerlink" title="1.7对象创建过程"></a>1.7对象创建过程</h2><ul>
+<li>第一步默认值</li>
+<li>第二步初始值</li>
+<li>第三步建立关联</li>
+</ul>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/43.png" alt="image-20221005113805878"></p>
+<h2 id="1-8单例模式"><a href="#1-8单例模式" class="headerlink" title="1.8单例模式"></a>1.8单例模式</h2><p><strong>提示：static private final</strong></p>
+<p>饿汉式	：二话不说现直接创建对象，类似悲观锁</p>
+<p>懒汉式	：类似按需加载		DLC（双检锁）加 Volatile</p>
+<ul>
+<li>反例破坏单例</li>
+<li>反序列化破坏单例</li>
+<li>Unsafe破坏单例</li>
+</ul>
+<p>核心代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Mgr06 <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">//业务逻辑代码省略</span></span><br><span class="line">    <span class="keyword">if</span> (INSTANCE == <span class="literal">null</span>) &#123; <span class="comment">//Double Check Lock</span></span><br><span class="line">    <span class="comment">//双重检查</span></span><br><span class="line">        <span class="keyword">synchronized</span> (Mgr06.class) &#123;</span><br><span class="line">            <span class="keyword">if</span>( INSTANCE == rhll) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(  <span class="number">1</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace( );</span><br><span class="line">                &#125;</span><br><span class="line">                INSTANCE = <span class="keyword">new</span> <span class="title class_">Mgr06</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">return</span> INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h4><p>compare and swap(比较并交换)	自旋锁，乐观锁</p>
+<h4 id="ABA问题"><a href="#ABA问题" class="headerlink" title="ABA问题"></a>ABA问题</h4><p><img src="/2022/10/08/JVM-%E4%B8%80/44.png" alt="image-20221005112639267"></p>
+<p>版本号解决，加一个版本号</p>
+<h4 id="CPU乱序执行"><a href="#CPU乱序执行" class="headerlink" title="CPU乱序执行"></a>CPU乱序执行</h4><p><strong>CPU速度比内存快100倍</strong></p>
+<p><strong>CPU（是CPU）指令乱序执行</strong></p>
+<p>CPU在进行<strong>读等待的同时执行指令</strong>，是CPU乱序的，<strong>根源不是乱，而是提高效率</strong></p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/45.png" alt="image-20221005105440655"></p>
+<h2 id="1-9DCL和Volatile"><a href="#1-9DCL和Volatile" class="headerlink" title="1.9DCL和Volatile"></a>1.9DCL和Volatile</h2><p><img src="/2022/10/08/JVM-%E4%B8%80/46.png" alt="image-20221005114703529"></p>
+<p><strong>new了一半，指令重排，先关联，构造还没调用，直接返回了（详情请看单例模式和对象new的过程）</strong></p>
+<h2 id="2、GC"><a href="#2、GC" class="headerlink" title="2、GC"></a>2、GC</h2><h4 id="1-从本质谈起"><a href="#1-从本质谈起" class="headerlink" title="1.从本质谈起"></a>1.从本质谈起</h4><p><strong>QQ.exe</strong> —–&gt;操作系统load到内存——–&gt;<strong>形成进程，进程里包含一条一条指令</strong>——-&gt;CPU一条一条的拿数据执行（需要内存的辅助）</p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/9.png" alt="image-20220928130451378"></p>
+<h4 id="2-程序的栈（stack-frame）和堆"><a href="#2-程序的栈（stack-frame）和堆" class="headerlink" title="2.程序的栈（stack frame）和堆"></a>2.程序的栈（stack frame）和堆</h4><p><img src="/2022/10/08/JVM-%E4%B8%80/10.png" alt="image-20220929190541995"></p>
+<p>栈的内存空间：自动管理（方法执行完自动弹出）</p>
+<p>堆内存管理：多年的难题</p>
+<h4 id="3-最难调试的Bug"><a href="#3-最难调试的Bug" class="headerlink" title="3.最难调试的Bug"></a>3.最难调试的Bug</h4><ul>
+<li><p>野指针</p>
+<p>–	同一个对象，两个指针，另一个不知道还拿来用</p>
+<p>–	同一个指针不同位置</p>
+<p>–	不再指向任何对象的指针</p>
+<p>–	NullPointException</p>
+<p>例如：</p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/11.png" alt="image-20220929193002660"></p>
+<p>图中m()方法把对象给干掉了，main方法中的O也指向了该对象，导致o指向空对象，更有甚者，这块内存又被别人给占了，那么o就会指向别人的对象（<strong>GO语言诞生：Google为了替代以前写过的C语言程序，C语言写程序写起来方便，快，但维护特别麻烦，Bug调试起来特别困难，所以开发Go语言，不在手工维护这些内存空间，而是和Java一样引入GC</strong>）</p>
+</li>
+<li><p>并发问题</p>
+<p>–	<strong>多线程访问同一块内存空间</strong></p>
+</li>
+</ul>
+<p>为什么分层，分代，因为以整块内存只用一种算法怎么算都有毛病，所以需要分层，使用综合算法</p>
+<h2 id="3、语言的发展历史"><a href="#3、语言的发展历史" class="headerlink" title="3、语言的发展历史"></a>3、语言的发展历史</h2><p><strong>向着Bug容易调试的方向发展</strong></p>
+<ul>
+<li><p>C&#x2F;C++</p>
+<p>–	手工管理内存：malloc等，free&#x2F; new delete（各种判断，各种麻烦的Bug）</p>
+<p>–	<strong>忘记删除忘记释放（memory leak    太多导致    out of memory） —————–最次调优——–重启</strong></p>
+<img src="/2022/10/08/JVM-%E4%B8%80/12.png" alt="image-20220929203045722" style="zoom: 50%;">
+
+<p>–	释放多次（鞭尸问题倒不是很大），产生极难调试的Bug，一个线程空间莫名奇妙的被另一个释放了。</p>
+<img src="/2022/10/08/JVM-%E4%B8%80/13.png" alt="image-20220929203845762" style="zoom: 80%;">
+
+<p>–	<strong>开发效率很低，运行速率很高</strong></p>
+</li>
+<li><p>Java，python，go</p>
+<p>–	方便内存管理的语言，问题还是存在，</p>
+<p>–	GC –Garbage Collection  （原来需要小心翼翼的管理，不能多删，不能误删，现在不需要，<strong>我们只管分配内存</strong>，不需要自己去维护删除这块，但是谁来帮我们管理删除这块？这就需要另起一个线程—-GC来帮我们管理，业务线程起来之后，还会启动许多线程，其中就包括GC）</p>
+<p>如下图：不断分配内存，迟早爆炸</p>
+<img src="/2022/10/08/JVM-%E4%B8%80/14.png" alt="image-20220929205519946" style="zoom: 67%;">
+
+<p>–	大大降低程序员的门槛（空指针依然存在NullpointException，你懂的）</p>
+<p>–	<strong>效率降低（多开了线程，必然的）</strong></p>
+<p>– 	JIT（Just IN TIME，重复，多次使用的代码保存到本地）只有一小段代码与C效率一样</p>
+<p>–	架构师思维（达成目的的工具，各有各的特点）</p>
+</li>
+<li><p>rust</p>
+<p>–	运行效率超高（asm C C++）</p>
+<p>–	<strong>不用手工管理内存（没有GC）</strong></p>
+<p>–	<strong>学习曲线巨高</strong>（ownership所有权）</p>
+<p>一个变量有且只有一个值，即多个变量指向同一个内存这种现象不会发生，这就是所有权的概念（一夫一妻制）</p>
+<p>–	只要程序语法通过，就不会有Bug（语法非常特殊）（不是逻辑Bug）</p>
+</li>
+</ul>
+<h2 id="4、Garbage-（什么是垃圾）"><a href="#4、Garbage-（什么是垃圾）" class="headerlink" title="4、Garbage?（什么是垃圾）"></a>4、Garbage?（什么是垃圾）</h2><p>什么是垃圾—————在运行过程中，没有任何引用指向他（对象）</p>
+<img src="/2022/10/08/JVM-%E4%B8%80/15.png" alt="image-20220929212549906" style="zoom: 50%;">
+
+<h2 id="5、How-To-Find-Garbage-（如何定位垃圾）"><a href="#5、How-To-Find-Garbage-（如何定位垃圾）" class="headerlink" title="5、How To Find Garbage?（如何定位垃圾）"></a>5、How To Find Garbage?（如何定位垃圾）</h2><p>有两种方法</p>
+<h5 id="第一种：reference-count（引用计数）"><a href="#第一种：reference-count（引用计数）" class="headerlink" title="第一种：reference count（引用计数）"></a>第一种：reference count（引用计数）</h5><img src="/2022/10/08/JVM-%E4%B8%80/16.png" alt="image-20220929213055291" style="zoom:50%;">
+
+<p><strong>如上图，一个引用消失，数字减一。</strong></p>
+<p>缺点：循环引用： A-&gt;B,B-&gt;C,C-&gt;A  （<strong>一个个垃圾变成一坨垃圾！！！</strong>）</p>
+<img src="/2022/10/08/JVM-%E4%B8%80/17.png" alt="image-20220929213329706" style="zoom:33%;">
+
+<h5 id="第二种：Root-Searching（根可达算法）"><a href="#第二种：Root-Searching（根可达算法）" class="headerlink" title="第二种：Root Searching（根可达算法）"></a>第二种：Root Searching（根可达算法）</h5><img src="/2022/10/08/JVM-%E4%B8%80/18.png" alt="image-20220929213634483" style="zoom: 33%;">
+
+
+
+<p><strong>顺着根找</strong>（什么是根？一般是main函数中的new，你懂的）</p>
+<h2 id="6、Garbage-Algorithms（清除算法）"><a href="#6、Garbage-Algorithms（清除算法）" class="headerlink" title="6、Garbage Algorithms（清除算法）"></a>6、Garbage Algorithms（清除算法）</h2><ul>
+<li>Mark Sweep（标记清除）</li>
+<li>Copying（拷贝）</li>
+<li>Mark-Compact（标记压缩）</li>
+</ul>
+<h4 id="1-Mark-Sweep（标记清除）"><a href="#1-Mark-Sweep（标记清除）" class="headerlink" title="1. Mark Sweep（标记清除）"></a>1. Mark Sweep（标记清除）</h4><img src="/2022/10/08/JVM-%E4%B8%80/19.png" alt="image-20220930083631352" style="zoom:50%;">
+
+<p>顺着根开始找，找的到的（有引用的）全都不是垃圾，<strong>找不到的全是垃圾</strong>，清除！！！</p>
+<p>缺点：内存变得碎片化，如上图，东一片，西一片，这时候要是来了一片大内存分配下去，<strong>你会发现找不到内存分配</strong></p>
+<h4 id="2-Copying（拷贝）"><a href="#2-Copying（拷贝）" class="headerlink" title="2. Copying（拷贝）"></a>2. Copying（拷贝）</h4><img src="/2022/10/08/JVM-%E4%B8%80/20.png" alt="image-20220930084206447" style="zoom:50%;">
+
+<p>将内存一分为二，设为内存A，内存B，内存A顺着根开始找，把找的到的（即不是垃圾的），<strong>排好序</strong>，复制到另一块内存B，清空内存A，</p>
+<p><strong>效率也很高</strong></p>
+<p>缺点：<strong>浪费内存</strong></p>
+<h4 id="3-Mark-Compact（标记压缩）"><a href="#3-Mark-Compact（标记压缩）" class="headerlink" title="3. Mark-Compact（标记压缩）"></a>3. Mark-Compact（标记压缩）</h4><img src="/2022/10/08/JVM-%E4%B8%80/21.png" alt="image-20220930085025365" style="zoom:50%;">
+
+<p>在回收的时候，顺便排序，让内存是连续的，其余的内存都是可用的，如上图，</p>
+<p>缺点：<strong>效率低！！！！</strong></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>三总算法都有毛病，当你把内存分成一整块的时候，不管是哪种算法都有毛病，<strong>所有GC非常聪明，他是对这三种算法进行综合运用，同时对内存进行了划分，三种算法的综合运用诞生了各种各样的垃圾回收器，每一种都有自己的特点</strong></p>
+<h2 id="7、Garbage-Collectors（垃圾回收器）"><a href="#7、Garbage-Collectors（垃圾回收器）" class="headerlink" title="7、Garbage Collectors（垃圾回收器）"></a>7、Garbage Collectors（垃圾回收器）</h2><h4 id="1-总图"><a href="#1-总图" class="headerlink" title="1. 总图"></a>1. 总图</h4><img src="/2022/10/08/JVM-%E4%B8%80/22.png" alt="image-20220930090038852" style="zoom:50%;">
+
+<h4 id="2-GC的演化"><a href="#2-GC的演化" class="headerlink" title="2. GC的演化"></a>2. GC的演化</h4><p>随着内存大小的不断增大而演进</p>
+<p>几兆——几十兆</p>
+<p>​	–	Serial 单线程STW垃圾回收 年青代，老年代</p>
+<p>几十兆——上百兆1G（房间变大了，只有妈妈一个人不够用）</p>
+<p>​	–	parallel 并行多线程</p>
+<p>几十个G</p>
+<p>​	–	</p>
+<p>​	–	内存越来越大，来多少人都不够，线程越多，效率越高？，不一定，又阈值，超过阈值，效率反而降低</p>
+<p>​			<strong>原因：CPU一个核同一时刻只能执行一个线程，16核16线程，1000个线程跑进来会进行排队，切换</strong></p>
+<p>​			<strong>执行你回儿，执行他一会儿，这个过程叫线程切换，线程切换也是需要消耗CPU资源的，线程切换所需的资源就超过了线程本身			运行所需要的资源</strong></p>
+<p>​	–	效率提不上去？——惊天地泣鬼神的<strong>Concurrent GC</strong>出现了  </p>
+<h4 id="–Concurrent"><a href="#–Concurrent" class="headerlink" title="–	Concurrent"></a>–	Concurrent</h4><p>从线程的角度：</p>
+<p>业务线程和GC线程同时运行，之前的是业务线程和GC只能跑一个，因为STW（stop-the-world）</p>
+<p>业务线程永远有响应</p>
+<p>产生各种麻烦的问题——一边制造垃圾，一边清理垃圾</p>
+<h4 id="3-内存分代模型（前6种）"><a href="#3-内存分代模型（前6种）" class="headerlink" title="3. 内存分代模型（前6种）"></a>3. 内存分代模型（前6种）</h4><img src="/2022/10/08/JVM-%E4%B8%80/23.png" alt="image-20220930090825869" style="zoom:50%;">
+
+<p><strong>新生代：</strong>  </p>
+<p>刚刚诞生的对象，年轻的，频繁被GC扫，</p>
+<p><strong>老年代：</strong>GC扫描多次后都没有进行回收，说明是个老顽固，如果在扫描就是浪费资源，所以把它放到老年代，等到老年代内存满了，装不下了，就扫描一次老年代清掉没用的垃圾</p>
+<p><strong>总结</strong>：<strong>综合算法的体现，新生代使用Copying算法，老年代使用Mark Sweep或者Mark-Compact又或者两者都使用</strong>，<strong>jdk1.8或者以前所采用的都是分代模型</strong></p>
+<p>​	–	年轻代的Copying算法与上面的有点不一样，年轻代的Copying算法是根据工业实践的出来的结果，一般来说，一次年轻代的回收		   称为min GC 或者 YGC，大概会回收90%的对象，剩下的只有10%，没必要分成两半，一般是</p>
+<p>​			8（eden）：1（survivor）：1（survivor）</p>
+<p>例如：</p>
+<p>​			10个对象刚刚被创建出来，放在eden区，一次GC干掉了90%，还剩一个对象放在survivor1区，eden整体清空，第二次又创建了			10个对象放在eden区，这时候会扫描eden区和survivor1区，又干掉90%，把存活下来的放在survivor2区，eden和survivor1区			整体清空，第三次则存活下来的则是放在survivor1区，eden和survivor2区整体清空，如此循环往复。十分简单，当survivor装不			下放入老年代，<strong>老年代满了FullGC</strong></p>
+<p><strong>方法区：1.7之前永久代，1.8之后叫元空间，不管怎么变都叫方法区</strong></p>
+<h5 id="Serial（在年青代工作）（单线程）"><a href="#Serial（在年青代工作）（单线程）" class="headerlink" title="Serial（在年青代工作）（单线程）"></a>Serial（在年青代工作）（单线程）</h5><p>你，你女盆友，你男盆友，哥三儿在房间里（年青代）扔纸团，扔到满了，这时候妈妈（GC）进来了，停止扔纸团（业务线程停止）不管做什么，什么姿势，都不许动了，这时候妈妈根查找清理没用的线团（垃圾）清完之后才能动，又继续玩，继续扔线团</p>
+<img src="/2022/10/08/JVM-%E4%B8%80/24.png" alt="image-20220930102733438" style="zoom:50%;">
+
+<p><strong>停止这段时间称为——stop-the-world（STW）</strong></p>
+<p>内存小，一个线程足矣</p>
+<h5 id="Serial-Old（在老年代工作）"><a href="#Serial-Old（在老年代工作）" class="headerlink" title="Serial Old（在老年代工作）"></a>Serial Old（在老年代工作）</h5><p>在老年代也是如此，也是一个线程，只不过算法不一样</p>
+<img src="/2022/10/08/JVM-%E4%B8%80/25.png" alt="image-20220930103021181" style="zoom:50%;">
+
+<h5 id="parallel-Scavenge（多线程，年青代）"><a href="#parallel-Scavenge（多线程，年青代）" class="headerlink" title="parallel Scavenge（多线程，年青代）"></a>parallel Scavenge（多线程，年青代）</h5><p><strong>1.8默认垃圾回收器</strong></p>
+<p>还是哥三儿，不过这次房间（内存）满了，不止妈妈进来清扫，还有爷爷，姥姥，舅舅进来清扫（多线程）</p>
+<h5 id="parallel-Old（多线程，老年代）"><a href="#parallel-Old（多线程，老年代）" class="headerlink" title="parallel Old（多线程，老年代）"></a>parallel Old（多线程，老年代）</h5><p>查看默认GC命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -XX:+PrintCommandLineFlags -version</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/10/08/JVM-%E4%B8%80/26.png" alt="image-20220930104229448"></p>
+<p>-XX:+UseParallelGC       &#x2F;&#x2F;意思是parallel Scavenge	+	parallel Old  组合</p>
+<h5 id="开天辟地Concurrent的第一个垃圾回收器——CMS"><a href="#开天辟地Concurrent的第一个垃圾回收器——CMS" class="headerlink" title="开天辟地Concurrent的第一个垃圾回收器——CMS"></a>开天辟地Concurrent的第一个垃圾回收器——CMS</h5><p>CMS全称——concurrent mark sweep（并发的标记清除）（工作在老年代）</p>
+<p>第一个Concurrent，像秦始皇，有天生的Bug</p>
+<h5 id="ParNew"><a href="#ParNew" class="headerlink" title="ParNew"></a>ParNew</h5><img src="/2022/10/08/JVM-%E4%B8%80/27.png" alt="image-20220930115002678" style="zoom:33%;">
+
+<p>工作在年青代的<strong>多线程</strong>，与CMS打配合</p>
+<p>​	–	为什么不用 parallel？</p>
+<p>​	enhancement 增强，是Parallel Scavenge的增强，为了配合CMS</p>
+<h5 id="垃圾回收器CMS算法理论"><a href="#垃圾回收器CMS算法理论" class="headerlink" title="垃圾回收器CMS算法理论"></a>垃圾回收器CMS算法理论</h5><img src="/2022/10/08/JVM-%E4%B8%80/28.png" alt="image-20220930120311581" style="zoom:50%;">
+
+<p>底层角度：6个阶段</p>
+<p>线程角度：4个阶段</p>
+<p>线程角度：</p>
+<ul>
+<li><p>初始标记，找到根对象，只需找到跟对象，依然会STW，但是根对象相对较少，所以STW会很快</p>
+</li>
+<li><p>并发标记，业务线程继续，业务一边运行，GC一边工作（标记），一定会存在错标，</p>
+<p>–	错标主要有两种情况，垃圾变成不是垃圾，不是垃圾变成垃圾</p>
+<p>–	<strong>著名的三色标记算法发生在此阶段</strong></p>
+</li>
+<li><p>重新标记，修正过程，业务线程不能继续，都发生错误了，肯定不能继续，也会发生STW</p>
+</li>
+<li><p>并发清理</p>
+</li>
+</ul>
+<h4 id="4-三色标记算法"><a href="#4-三色标记算法" class="headerlink" title="4. 三色标记算法"></a>4. 三色标记算法</h4><p>并发标记阶段，还没有清理，只是在标记，业务线程一边运行，GC一边找，GC就会问哥们儿是垃圾吗？哥们儿是垃圾吗？哥们儿是垃圾吗？因为线程会切换，同一个线程会隔一段时间运行隔一段时间运行，所以需要把状态保存下来，如上一次运行扫描到50%这个程度了，下次要在这个基础之上继续扫描，直到扫描完全部才算结束，然后才开始清理</p>
+<p>小知识：线程的运行时间是由操作系统来进行调度的，他调度的时间片以及时间长都不是固定的，LinuxCPU内核采用的是CFS（完全公平算法）算法，<strong>所以必须要把标记到那里保存下来，怎么记录下来呢，采用的就是三色标记算法</strong></p>
+<img src="/2022/10/08/JVM-%E4%B8%80/29.png" alt="image-20220930171816913" style="zoom:50%;">
+
+<p>黑色：孩子都扫描完，黑色</p>
+<p>灰色：孩子未扫描完，灰色</p>
+<p>白色：没用遍历到的节点，白色，枚举完还是白色，当垃圾清除</p>
+<p>用两位来标记颜色（00 01 10 11），标记在对象上，放在mark word（详情看**.class文件解读**）上</p>
+<p><strong>两个问题（详情CSDN三色标记）</strong></p>
+<p>本应该是垃圾的对象被视为非垃圾（问题不大）</p>
+<p>一个本不应该是垃圾的对象被视为垃圾（GG）</p>
+<p>所以需要remark（重新标记阶段），必须从头扫一遍，STW非常漫长（慢啊啊啊A~A~~A），因此，没有任何一个JDK版本把它作为默认的垃圾回收器</p>
+<p>漏标必然存在</p>
+<p>三色只是一个扫描算法，普遍使用，错不在他，是CMS的Incremental Update有Bug，G1的STAB没Bug（？？？好用！！！），1.8之前没得选，想要并发的话，1.7诞生G1，可惜当时的G1不成熟</p>
+<h4 id="5-内存不分代模型"><a href="#5-内存不分代模型" class="headerlink" title="5. 内存不分代模型"></a>5. 内存不分代模型</h4><h5 id="Epsilon："><a href="#Epsilon：" class="headerlink" title="Epsilon："></a>Epsilon：</h5><p>什么也不干垃圾回收器,开发JVM的人做DeBug用的</p>
+<p>内存超级大，也用不了这么多内存，就什么也不干，等程序结束自己释放内存，效率极高（什么也不干Very Good）</p>
+<h5 id="G1：目前主流"><a href="#G1：目前主流" class="headerlink" title="G1：目前主流"></a>G1：目前主流</h5><img src="/2022/10/08/JVM-%E4%B8%80/30.png" alt="image-20220930190521288" style="zoom:50%;">
+
+<p>摒弃了分代模型，因为随着内存越来越大，不管怎么采用并发玩一边，速度都玩不转，CMS固有的Bug，必须改进。</p>
+<p>产生Region（分区算法），永远有空的内存可用，需要连续内存（Humongous），如何连不上开始整理</p>
+<p>缺点：一次回收要把G1的年青代全部回收完，当你的年青代很大的时候，一次YGC的STW也需要很长时间</p>
+<p>G1逻辑上是分代的，物理不分代</p>
+<h5 id="ZGC（分页算法）"><a href="#ZGC（分页算法）" class="headerlink" title="ZGC（分页算法）"></a>ZGC（分页算法）</h5><p>因为G1的缺点，所以诞生了ZGC（分页算法），goLong的核心</p>
+<p>​	–	支持TB级别（4T，据说以经扩展到16T）</p>
+<p>​	–	最大GC停顿10ms</p>
+<p>​	–	内存增大，停顿时间不长</p>
+<p>​	–	throughPut不超过15%影响</p>
+<p>​			–	SPECjbb 2015基准测试，128G堆内存，单纯GC停顿最大1.68ms，平均1.09ms</p>
+<ul>
+<li>Colored Point（颜色指针）太复杂以后研究</li>
+<li>loadBarrier（读屏障）</li>
+<li>SingleGeneration（不再分代）</li>
+<li>内存大小固定，为2的倍数，1，2，4，8，16，32</li>
+</ul>
+<h5 id="Shenandoal"><a href="#Shenandoal" class="headerlink" title="Shenandoal"></a>Shenandoal</h5><p>开源，红帽提供，与ZGC类似，不分代</p>
+<h2 id="8、什么是调优"><a href="#8、什么是调优" class="headerlink" title="8、什么是调优"></a>8、什么是调优</h2><p>为什么一个百万级的TPS系统会频繁GC</p>
+<p>被问调优，一定要指明是那个垃圾回收器（GC）</p>
+<p><strong>什么是调优？</strong></p>
+<ul>
+<li>根据内存进行JVM规划和预调优</li>
+<li>优化运行JVM运行环境（慢，卡顿）（怎么才能定位一个系统的瓶颈？压测）</li>
+<li>解决JVM运行过程中出现的各种问题（Memory Leak ）（OOM  out of memory）</li>
+</ul>
+<p>GC日志详解（<strong>之后补充</strong>）</p>
+<p><strong>工业生产环境中，一个Java程序应该设置什么参数</strong></p>
+<img src="/2022/10/08/JVM-%E4%B8%80/31.png" alt="image-20220930203711901" style="zoom:50%;">
+
+<p>JVM可能一个月才出一次问题，很难模拟</p>
+<p>模拟银行或者互联网金融体系，风控（可信度—贷款，家里有矿，贷多一点）根据过去的情况，是否按时还款，有没有借贷不还的，取出用户信息计算出来的，套用风险控制模型计算出他的贷款额度，或者是否给他贷款</p>
+<p>创建一个List，不断往里头扔对象，很快就内存溢出了（这个例子太简单）</p>
+<p>一个方法每次从数据库拿出100条数据，放进任务列表里，起了一个线程池，定时执行任务，50个线程，固定频率拿出数据进行计算</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -Xms200M -Xms200M -XX:+PrintGC  com.......   //-Xms200M -Xms200M设置一样，防止内存抖动，防止内存涨来涨去，缩来														//缩去</span><br><span class="line">												//-XX:+PrintGC 输出GC日志</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><img src="/2022/10/08/JVM-%E4%B8%80/32.png" alt="image-20220930211110355"></p>
+<p>一个Java命令会启动一个Java虚拟机，两个则启动两个Java虚拟机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java		//查询命令参数</span><br><span class="line">java -X		//查询带X的非标参数</span><br><span class="line">java -XX:+PrintFlagsFinal -version   //查询所有参数的最终值，带XX的有700多个，我们用的只有几十个而已</span><br></pre></td></tr></table></figure>
+
+<p>带XX的有700多个，我们用的<strong>只有几十个而已</strong></p>
+<p>-X     非标参数，用来调优</p>
+<p>-XX   真正的调优参数</p>
+<h5 id="jps（java-process-系统里的Java进程）"><a href="#jps（java-process-系统里的Java进程）" class="headerlink" title="jps（java process 系统里的Java进程）"></a>jps（java process 系统里的Java进程）</h5><p><img src="/2022/10/08/JVM-%E4%B8%80/33.png" alt="image-20220930212903658"></p>
+<p>两个进程 </p>
+<ul>
+<li>JPS本身</li>
+<li>FullGC</li>
+</ul>
+<h5 id="jinfo-11800（进程名称）"><a href="#jinfo-11800（进程名称）" class="headerlink" title="jinfo   11800（进程名称）"></a>jinfo   11800（进程名称）</h5><h5 id="jstat（java的统计信息-或者-java的跟踪信息）"><a href="#jstat（java的统计信息-或者-java的跟踪信息）" class="headerlink" title="jstat（java的统计信息    或者  java的跟踪信息）"></a>jstat（java的统计信息    或者  java的跟踪信息）</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jstat -gc 11800  // 加上进程号， 跟踪gc的信息</span><br><span class="line">jstat -gc 11800 500  //每500秒打印一次，后面有工具</span><br></pre></td></tr></table></figure>
+
+<h5 id="jstack-（跟踪线程的）"><a href="#jstack-（跟踪线程的）" class="headerlink" title="jstack （跟踪线程的）"></a>jstack （跟踪线程的）</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack 11800   //把11800所有线程列出来</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/10/08/JVM-%E4%B8%80/34.png" alt="image-20220930213944875"></p>
+<ul>
+<li>线程名字</li>
+<li>线程编号</li>
+<li>线程优先级</li>
+<li>操作系统级别优先级</li>
+<li>线程状态</li>
+<li>线程的调用堆栈（即这个方法调用了那个方法，这个方法又调了哪个方法）</li>
+</ul>
+<p>如果很多个线程一直在waiting，可能是死锁</p>
+<h5 id="top"><a href="#top" class="headerlink" title="top"></a>top</h5><p>显示当前系统里哪个进程占CPU、内存</p>
+<h5 id="top-Hp-11800"><a href="#top-Hp-11800" class="headerlink" title="top -Hp 11800"></a>top -Hp 11800</h5><p>查看11800进程里的所有线程</p>
+<h5 id="JVM的CPU爆了，怎么查"><a href="#JVM的CPU爆了，怎么查" class="headerlink" title="JVM的CPU爆了，怎么查"></a>JVM的CPU爆了，怎么查</h5><p>jvm占据很高CPU，怎么查&#x2F;追踪：top查进程信息，找出消耗高的，top -Hp 11800查线程信息找出是这个进程里哪个线程消耗高，</p>
+<p>再使用jstack对比线程信息，找到该消耗高的线程（定位），会有两种情况：</p>
+<p>第一种：该线程是VM线程，一般是GC，查看GC日志；</p>
+<p>​	–	频繁GC？压力爆表如双十一</p>
+<p>​	–	内存回收不掉，内存泄漏</p>
+<p>第二种：业务线程。二话不说，查看他调用了什么方法</p>
+<p><img src="/2022/10/08/JVM-%E4%B8%80/35.png" alt="image-20221001091752421"></p>
+<p>频繁FullGC，200M内存回收完还是200M，内存被占满了</p>
+<h5 id="jmap："><a href="#jmap：" class="headerlink" title="jmap："></a>jmap：</h5><p>—– 是谁在调用内存。</p>
+<p>—–查看堆内存中对象占用情况，不同类的对象占用内存比重</p>
+<p>——产生堆转储文件，把<strong>JVM</strong>导出来存到硬盘上，拿来分析</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jmap -histo 11988   //查看当前进程所有类又多少个实例</span><br><span class="line">jmap -histo 11988 | head 20   //查看前20个</span><br></pre></td></tr></table></figure>
+
+<p><strong>多运行几次，注意看哪些类的实例个数在不断增长，说明没有被回收</strong>，然后查业务逻辑</p>
+<p>jmap会让整个JVM卡死，STW，把对象输出出来，生产环境肯定不能这么干</p>
+<p><strong>可以在测试环境执行，复制一份到备份机上执行</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -dumpa:format=b,file=20200912.hprof 11988 //把堆内存转储成文件，来对他进行分析</span><br></pre></td></tr></table></figure>
+
+<p>把java的整个堆转成文件，在网下载图形工具进行分析，java自带了一个</p>
+<p>往外到文件，依然会让JVM卡死</p>
+<p>一定设置好启动参数</p>
+<p>-XX:+HeapDumpOnOutOfMemoryError  &#x2F;&#x2F; 当内存爆了，自动生成堆转储文件，在使用工具分析</p>
+<p>生成环境下，除了运维，不多开端口，若是远程连接，会导致不安全，且性能下降10%-15%</p>
+<p>​	–	压测的时候查看</p>
+<p>​	–	做了负载均衡，把出问题的机器摘出来，在分析</p>
+<p>​	–	双十一之类，互联网连接特别多，使用tcp copy命令复制一份，一份给生产环境，一份给测试环境</p>
+<h5 id="Arthas"><a href="#Arthas" class="headerlink" title="Arthas"></a>Arthas</h5><p><img src="/2022/10/08/JVM-%E4%B8%80/36.png" alt="image-20221002092318715"></p>
+<p>查找所有Java进程</p>
+<p>然后选择进行挂载，对他进行观察</p>
+<p>影响系统进程，10%-15%</p>
+<p><strong>替代之前所有命令，且直观</strong></p>
+<h6 id="dashboard（仪表盘）"><a href="#dashboard（仪表盘）" class="headerlink" title="dashboard（仪表盘）"></a>dashboard（仪表盘）</h6><p><img src="/2022/10/08/JVM-%E4%B8%80/37.png" alt="image-20221002092622596"></p>
+<p><strong>结合了前面所有命令，可以看到，这个进程里有哪些线程，哪些线程在吃CPU，且在最前面</strong></p>
+<p>还包括堆内存占多少，非堆内存占多少，</p>
+<h6 id="heap-dump"><a href="#heap-dump" class="headerlink" title="heap dump"></a>heap dump</h6><p>替代jmap</p>
+<h6 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thread -b  //直接找死锁，不像上面那么麻烦</span><br></pre></td></tr></table></figure>
+
+<h6 id="jvm"><a href="#jvm" class="headerlink" title="jvm"></a>jvm</h6><p>与jinfo差不多</p>
+<h6 id="trace"><a href="#trace" class="headerlink" title="trace"></a>trace</h6><p><strong>以上只是定位问题</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Barry Alen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/10/08/JVM-%E4%B8%80/">http://example.com/2022/10/08/JVM-%E4%B8%80/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Barry Alen</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/class/">.class</a><a class="post-meta__tags" href="/tags/GC/">GC</a><a class="post-meta__tags" href="/tags/JVM/">JVM</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/28/wallhaven-28pjo6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%B8%80/"><img class="prev-cover" src="https://w.wallhaven.cc/full/ox/wallhaven-oxdl3p.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">多线程(一)</div></div></a></div><div class="next-post pull-right"><a href="/2022/09/21/%E9%9B%86%E5%90%88/"><img class="next-cover" src="https://w.wallhaven.cc/full/85/wallhaven-857r6j.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">集合</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/myfile/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Barry Alen</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81JVM%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">1、JVM基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-ClassFileFormat"><span class="toc-number">2.</span> <span class="toc-text">1.2 ClassFileFormat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3%E5%AF%B9%E8%B1%A1%E5%A4%B4%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">1.3对象头包括什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D"><span class="toc-number">4.</span> <span class="toc-text">1.4对象定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5%E5%AF%B9%E8%B1%A1%E6%80%8E%E4%B9%88%E5%88%86%E9%85%8D"><span class="toc-number">5.</span> <span class="toc-text">1.5对象怎么分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6%E4%B8%80%E4%B8%AAObject%E5%8D%A0%E5%A4%9A%E5%B0%91%E5%AD%97%E8%8A%82"><span class="toc-number">6.</span> <span class="toc-text">1.6一个Object占多少字节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="toc-number">7.</span> <span class="toc-text">1.7对象创建过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-8%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">8.</span> <span class="toc-text">1.8单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CAS"><span class="toc-number">8.0.1.</span> <span class="toc-text">CAS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ABA%E9%97%AE%E9%A2%98"><span class="toc-number">8.0.2.</span> <span class="toc-text">ABA问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C"><span class="toc-number">8.0.3.</span> <span class="toc-text">CPU乱序执行</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-9DCL%E5%92%8CVolatile"><span class="toc-number">9.</span> <span class="toc-text">1.9DCL和Volatile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81GC"><span class="toc-number">10.</span> <span class="toc-text">2、GC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BB%8E%E6%9C%AC%E8%B4%A8%E8%B0%88%E8%B5%B7"><span class="toc-number">10.0.1.</span> <span class="toc-text">1.从本质谈起</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%A0%88%EF%BC%88stack-frame%EF%BC%89%E5%92%8C%E5%A0%86"><span class="toc-number">10.0.2.</span> <span class="toc-text">2.程序的栈（stack frame）和堆</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%9C%80%E9%9A%BE%E8%B0%83%E8%AF%95%E7%9A%84Bug"><span class="toc-number">10.0.3.</span> <span class="toc-text">3.最难调试的Bug</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2"><span class="toc-number">11.</span> <span class="toc-text">3、语言的发展历史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81Garbage-%EF%BC%88%E4%BB%80%E4%B9%88%E6%98%AF%E5%9E%83%E5%9C%BE%EF%BC%89"><span class="toc-number">12.</span> <span class="toc-text">4、Garbage?（什么是垃圾）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81How-To-Find-Garbage-%EF%BC%88%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%9E%83%E5%9C%BE%EF%BC%89"><span class="toc-number">13.</span> <span class="toc-text">5、How To Find Garbage?（如何定位垃圾）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9Areference-count%EF%BC%88%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%EF%BC%89"><span class="toc-number">13.0.0.1.</span> <span class="toc-text">第一种：reference count（引用计数）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9ARoot-Searching%EF%BC%88%E6%A0%B9%E5%8F%AF%E8%BE%BE%E7%AE%97%E6%B3%95%EF%BC%89"><span class="toc-number">13.0.0.2.</span> <span class="toc-text">第二种：Root Searching（根可达算法）</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81Garbage-Algorithms%EF%BC%88%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95%EF%BC%89"><span class="toc-number">14.</span> <span class="toc-text">6、Garbage Algorithms（清除算法）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Mark-Sweep%EF%BC%88%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%EF%BC%89"><span class="toc-number">14.0.1.</span> <span class="toc-text">1. Mark Sweep（标记清除）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Copying%EF%BC%88%E6%8B%B7%E8%B4%9D%EF%BC%89"><span class="toc-number">14.0.2.</span> <span class="toc-text">2. Copying（拷贝）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Mark-Compact%EF%BC%88%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9%EF%BC%89"><span class="toc-number">14.0.3.</span> <span class="toc-text">3. Mark-Compact（标记压缩）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">14.0.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81Garbage-Collectors%EF%BC%88%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%EF%BC%89"><span class="toc-number">15.</span> <span class="toc-text">7、Garbage Collectors（垃圾回收器）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%80%BB%E5%9B%BE"><span class="toc-number">15.0.1.</span> <span class="toc-text">1. 总图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-GC%E7%9A%84%E6%BC%94%E5%8C%96"><span class="toc-number">15.0.2.</span> <span class="toc-text">2. GC的演化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%93Concurrent"><span class="toc-number">15.0.3.</span> <span class="toc-text">–	Concurrent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%86%85%E5%AD%98%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B%EF%BC%88%E5%89%8D6%E7%A7%8D%EF%BC%89"><span class="toc-number">15.0.4.</span> <span class="toc-text">3. 内存分代模型（前6种）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Serial%EF%BC%88%E5%9C%A8%E5%B9%B4%E9%9D%92%E4%BB%A3%E5%B7%A5%E4%BD%9C%EF%BC%89%EF%BC%88%E5%8D%95%E7%BA%BF%E7%A8%8B%EF%BC%89"><span class="toc-number">15.0.4.1.</span> <span class="toc-text">Serial（在年青代工作）（单线程）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Serial-Old%EF%BC%88%E5%9C%A8%E8%80%81%E5%B9%B4%E4%BB%A3%E5%B7%A5%E4%BD%9C%EF%BC%89"><span class="toc-number">15.0.4.2.</span> <span class="toc-text">Serial Old（在老年代工作）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#parallel-Scavenge%EF%BC%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%B9%B4%E9%9D%92%E4%BB%A3%EF%BC%89"><span class="toc-number">15.0.4.3.</span> <span class="toc-text">parallel Scavenge（多线程，年青代）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#parallel-Old%EF%BC%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8C%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%89"><span class="toc-number">15.0.4.4.</span> <span class="toc-text">parallel Old（多线程，老年代）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%80%E5%A4%A9%E8%BE%9F%E5%9C%B0Concurrent%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E2%80%94%E2%80%94CMS"><span class="toc-number">15.0.4.5.</span> <span class="toc-text">开天辟地Concurrent的第一个垃圾回收器——CMS</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ParNew"><span class="toc-number">15.0.4.6.</span> <span class="toc-text">ParNew</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8CMS%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA"><span class="toc-number">15.0.4.7.</span> <span class="toc-text">垃圾回收器CMS算法理论</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95"><span class="toc-number">15.0.5.</span> <span class="toc-text">4. 三色标记算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E5%86%85%E5%AD%98%E4%B8%8D%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B"><span class="toc-number">15.0.6.</span> <span class="toc-text">5. 内存不分代模型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Epsilon%EF%BC%9A"><span class="toc-number">15.0.6.1.</span> <span class="toc-text">Epsilon：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#G1%EF%BC%9A%E7%9B%AE%E5%89%8D%E4%B8%BB%E6%B5%81"><span class="toc-number">15.0.6.2.</span> <span class="toc-text">G1：目前主流</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ZGC%EF%BC%88%E5%88%86%E9%A1%B5%E7%AE%97%E6%B3%95%EF%BC%89"><span class="toc-number">15.0.6.3.</span> <span class="toc-text">ZGC（分页算法）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Shenandoal"><span class="toc-number">15.0.6.4.</span> <span class="toc-text">Shenandoal</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E8%B0%83%E4%BC%98"><span class="toc-number">16.</span> <span class="toc-text">8、什么是调优</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#jps%EF%BC%88java-process-%E7%B3%BB%E7%BB%9F%E9%87%8C%E7%9A%84Java%E8%BF%9B%E7%A8%8B%EF%BC%89"><span class="toc-number">16.0.0.1.</span> <span class="toc-text">jps（java process 系统里的Java进程）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#jinfo-11800%EF%BC%88%E8%BF%9B%E7%A8%8B%E5%90%8D%E7%A7%B0%EF%BC%89"><span class="toc-number">16.0.0.2.</span> <span class="toc-text">jinfo   11800（进程名称）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#jstat%EF%BC%88java%E7%9A%84%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF-%E6%88%96%E8%80%85-java%E7%9A%84%E8%B7%9F%E8%B8%AA%E4%BF%A1%E6%81%AF%EF%BC%89"><span class="toc-number">16.0.0.3.</span> <span class="toc-text">jstat（java的统计信息    或者  java的跟踪信息）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#jstack-%EF%BC%88%E8%B7%9F%E8%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84%EF%BC%89"><span class="toc-number">16.0.0.4.</span> <span class="toc-text">jstack （跟踪线程的）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#top"><span class="toc-number">16.0.0.5.</span> <span class="toc-text">top</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#top-Hp-11800"><span class="toc-number">16.0.0.6.</span> <span class="toc-text">top -Hp 11800</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#JVM%E7%9A%84CPU%E7%88%86%E4%BA%86%EF%BC%8C%E6%80%8E%E4%B9%88%E6%9F%A5"><span class="toc-number">16.0.0.7.</span> <span class="toc-text">JVM的CPU爆了，怎么查</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#jmap%EF%BC%9A"><span class="toc-number">16.0.0.8.</span> <span class="toc-text">jmap：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Arthas"><span class="toc-number">16.0.0.9.</span> <span class="toc-text">Arthas</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#dashboard%EF%BC%88%E4%BB%AA%E8%A1%A8%E7%9B%98%EF%BC%89"><span class="toc-number">16.0.0.9.1.</span> <span class="toc-text">dashboard（仪表盘）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#heap-dump"><span class="toc-number">16.0.0.9.2.</span> <span class="toc-text">heap dump</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#thread"><span class="toc-number">16.0.0.9.3.</span> <span class="toc-text">thread</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#jvm"><span class="toc-number">16.0.0.9.4.</span> <span class="toc-text">jvm</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#trace"><span class="toc-number">16.0.0.9.5.</span> <span class="toc-text">trace</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/08/%E6%B3%A8%E8%A7%A3-%E4%B8%80/" title="注解(一)"><img src="https://w.wallhaven.cc/full/6o/wallhaven-6o9e1q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="注解(一)"/></a><div class="content"><a class="title" href="/2022/10/08/%E6%B3%A8%E8%A7%A3-%E4%B8%80/" title="注解(一)">注解(一)</a><time datetime="2022-10-08T05:30:24.000Z" title="发表于 2022-10-08 13:30:24">2022-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/08/%E5%8F%8D%E5%B0%84/" title="反射"><img src="https://w.wallhaven.cc/full/vq/wallhaven-vqxog5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="反射"/></a><div class="content"><a class="title" href="/2022/10/08/%E5%8F%8D%E5%B0%84/" title="反射">反射</a><time datetime="2022-10-08T05:29:32.000Z" title="发表于 2022-10-08 13:29:32">2022-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/08/static/" title="static"><img src="https://w.wallhaven.cc/full/wq/wallhaven-wqppe7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="static"/></a><div class="content"><a class="title" href="/2022/10/08/static/" title="static">static</a><time datetime="2022-10-08T05:29:09.000Z" title="发表于 2022-10-08 13:29:09">2022-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%B8%80/" title="多线程(一)"><img src="https://w.wallhaven.cc/full/ox/wallhaven-oxdl3p.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="多线程(一)"/></a><div class="content"><a class="title" href="/2022/10/08/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%B8%80/" title="多线程(一)">多线程(一)</a><time datetime="2022-10-08T05:28:51.000Z" title="发表于 2022-10-08 13:28:51">2022-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/08/JVM-%E4%B8%80/" title="JVM(一)"><img src="https://w.wallhaven.cc/full/28/wallhaven-28pjo6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JVM(一)"/></a><div class="content"><a class="title" href="/2022/10/08/JVM-%E4%B8%80/" title="JVM(一)">JVM(一)</a><time datetime="2022-10-08T05:10:10.000Z" title="发表于 2022-10-08 13:10:10">2022-10-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Barry Alen</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2022/10/08/JVM-%E4%B8%80/'
+    this.page.identifier = '/2022/10/08/JVM-%E4%B8%80/'
+    this.page.title = 'JVM(一)'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+
+  document.getElementById('darkmode').addEventListener('click', () => {
+    setTimeout(() => window.disqusReset(), 200)
+  })
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><div class="aplayer no-destroy" data-id="60198" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
