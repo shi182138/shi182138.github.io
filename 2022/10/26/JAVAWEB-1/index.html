@@ -1,0 +1,820 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>JAVAWEB(1) | Barry</title><meta name="keywords" content="web"><meta name="author" content="Barry"><meta name="copyright" content="Barry"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Servlet关于系统架构1.系统架构包括什么形式? C&#x2F;S架构。 B&#x2F;S架构  2.C&#x2F;S架构? Client &#x2F; Server (客户端&#x2F;服务器)。  C&#x2F;S架构的软件或者说系统有哪些呢? QQ（先去腾讯官网下载一个QQ软件，几十MB，然后把这个客户端软件安装上去，然后输入QQ号以及密码，登录之后，就可以和你的朋友聊天了，就可以使用这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVAWEB(1)">
+<meta property="og:url" content="http://example.com/2022/10/26/JAVAWEB-1/index.html">
+<meta property="og:site_name" content="Barry">
+<meta property="og:description" content="Servlet关于系统架构1.系统架构包括什么形式? C&#x2F;S架构。 B&#x2F;S架构  2.C&#x2F;S架构? Client &#x2F; Server (客户端&#x2F;服务器)。  C&#x2F;S架构的软件或者说系统有哪些呢? QQ（先去腾讯官网下载一个QQ软件，几十MB，然后把这个客户端软件安装上去，然后输入QQ号以及密码，登录之后，就可以和你的朋友聊天了，就可以使用这">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/1p/wallhaven-1pj2k3.jpg">
+<meta property="article:published_time" content="2022-10-26T02:04:00.000Z">
+<meta property="article:modified_time" content="2022-10-26T02:44:35.122Z">
+<meta property="article:author" content="Barry">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/1p/wallhaven-1pj2k3.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/10/26/JAVAWEB-1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'JAVAWEB(1)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-26 10:44:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/myfile/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/myfile/test.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/1p/wallhaven-1pj2k3.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Barry</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/myfile/test.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JAVAWEB(1)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-26T02:04:00.000Z" title="发表于 2022-10-26 10:04:00">2022-10-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-26T02:44:35.122Z" title="更新于 2022-10-26 10:44:35">2022-10-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JAVAWEB(1)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h2><h3 id="关于系统架构"><a href="#关于系统架构" class="headerlink" title="关于系统架构"></a>关于系统架构</h3><h4 id="1-系统架构包括什么形式"><a href="#1-系统架构包括什么形式" class="headerlink" title="1.系统架构包括什么形式?"></a>1.系统架构包括什么形式?</h4><ul>
+<li>C&#x2F;S架构。</li>
+<li>B&#x2F;S架构</li>
+</ul>
+<h4 id="2-C-x2F-S架构"><a href="#2-C-x2F-S架构" class="headerlink" title="2.C&#x2F;S架构?"></a>2.C&#x2F;S架构?</h4><ul>
+<li>Client &#x2F; Server (客户端&#x2F;服务器)。 </li>
+<li>C&#x2F;S架构的软件或者说系统有哪些呢?</li>
+<li>QQ（先去腾讯官网下载一个QQ软件，几十MB，然后把这个客户端软件安装上去，然后输入QQ号以及密码，登录之后，就<br>可以和你的朋友聊天了，就可以使用这个软件了。)</li>
+<li>C&#x2F;S架构的特点:需要安装特定的客户端软件。</li>
+<li>C&#x2F;S架构的系统优点和缺点分别是什么?<ul>
+<li>优点:<ul>
+<li>速度快（软件中的数据大部分都是集成到客户端软件当中的，很少量的数据从服务器端传送过来，所以C&#x2F;S结构的系统速度快)</li>
+<li>体验好(速度又快,界面又酷炫，当然体验好了。)</li>
+<li>界面酷炫（(专门的语言去实现界面的，更加灵活。)<br>服务器压力小(<strong>因为大量的数据都是集成在客户端软件当中，所以服务器只需要传送很少的数据量，当然服务器压力小</strong>。)</li>
+<li>安全(因为大星的数据是集成在客户端软件当中的，并且客户端有很多个，服务器虽然只有一个，就算服务器那边地震了，火灾了，服务器受损了，问题也不大，因为大量的数据在多个客户端上有缓存，有存储，所以从这个方面来说，C&#x2F;S结构的系统比较安全。)</li>
+</ul>
+</li>
+<li>缺点:<ul>
+<li>升级维护比较差劲。(升级维护比较麻烦。成本比较高。每一个客户端软件都需要升级。有一些软件不是那么容易安装的。)比如银行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-B-x2F-S架构"><a href="#3-B-x2F-S架构" class="headerlink" title="3.B&#x2F;S架构?"></a>3.B&#x2F;S架构?</h4><ul>
+<li>B&#x2F;S (Browser &#x2F; Server，浏览器&#x2F;服务器)</li>
+<li><a target="_blank" rel="noopener" href="http://www.baidu.com/">http://www.baidu.com</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jd.como/">http://www.jd.como</a> </li>
+<li><a target="_blank" rel="noopener" href="http://www.126.com/">http://www.126.com</a></li>
+<li>B&#x2F;S结构的系统是不是一个特殊的C&#x2F;S系统?<ul>
+<li>实际上B&#x2F;S结构的系统还是一个CIS，只不过这个C比较特殊，<strong>这个Client是一个固定不变浏览器软件。</strong></li>
+</ul>
+</li>
+<li>B&#x2F;S结构的系统优点和缺点是:<ul>
+<li>优点:<ul>
+<li>升级维护方便，成本比较低。(只需要升级服务器端即可。)</li>
+<li>不需要安装特定的客户端软件，用户操作极其方便。只需要打开浏览器，输入网址即可。</li>
+</ul>
+</li>
+<li>缺点:<ul>
+<li>速度慢〈不是因为带宽低的问题，是因为所有的数据都是在服务器上，用户发送的每一个请求都是需要服务器全身心的响应数据，所以B&#x2F;S结构的系统在网络中传送的数据量比较大。)</li>
+<li>体验差（界面不是那么酷炫，因为浏览器只支持三个语言HTML CSSJavaScript。在加上速度慢。)</li>
+<li>不安全(所有的数据都在服务器上，只要服务器发生火灾，地震等不可抗力，最终数据全部丢失。)</li>
+<li>….</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-C-x2F-S和B-x2F-S结构的系统-哪个好，哪个不好"><a href="#4-C-x2F-S和B-x2F-S结构的系统-哪个好，哪个不好" class="headerlink" title="4.C&#x2F;S和B&#x2F;S结构的系统,哪个好，哪个不好?"></a>4.C&#x2F;S和B&#x2F;S结构的系统,哪个好，哪个不好?</h4><ul>
+<li>这个问题问的没有水平。并不是哪个好，哪个不好。不同结构的系统在不同的业务场景下有不同的适用场景。</li>
+<li>娱乐性软件建议使用?<ul>
+<li>C&#x2F;S结构</li>
+</ul>
+</li>
+<li>公司内部使用的—些业务软件建议使用?<ul>
+<li>公司内部使用的系统，需要维护成本低。</li>
+<li>公司内部使用的系统，不需要很酷炫。</li>
+<li>公司内部使用的企业级系统主要是能够进行数据的维护即可。B&#x2F;S结构。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-注意了-开发B-x2F-S结构的系统，其实就是开发网站，其实就是开发一个WEB系统。"><a href="#5-注意了-开发B-x2F-S结构的系统，其实就是开发网站，其实就是开发一个WEB系统。" class="headerlink" title="5.注意了:开发B&#x2F;S结构的系统，其实就是开发网站，其实就是开发一个WEB系统。"></a>5.注意了:开发B&#x2F;S结构的系统，其实就是开发网站，其实就是开发一个WEB系统。</h4><ul>
+<li><p>开发一个WEB系统你需要会哪些技术?</p>
+<ul>
+<li>WEB前端（运行在浏览器上的程序。)</li>
+<li>HTML</li>
+<li>CSS</li>
+<li>JavaScript</li>
+</ul>
+</li>
+<li><p>WEB后端(WEB服务器端的程序。)</p>
+<ul>
+<li><p>java可以(Java做WEB开发我们称为JavaWEB开发。JavaWEB开发最核心的规范: Servlet.【<strong>Server Applet服务器端的Java小程序。</strong>】)</p>
+</li>
+<li><p>C语言也可以</p>
+</li>
+<li><p>C++也可以</p>
+</li>
+<li><p>Python也行</p>
+</li>
+<li><p>PHP也可以</p>
+</li>
+<li><p>…..</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-JavaEE是什么"><a href="#6-JavaEE是什么" class="headerlink" title="6.JavaEE是什么?"></a>6.JavaEE是什么?</h4><ul>
+<li><p>Java包括三大块:</p>
+<ul>
+<li><p>lavaSE</p>
+<ul>
+<li>Java标准版（一套类库:别人写好的一套类库，只不过这个类库是标准类库，走E，或者走ME，这个SE一定是基础，先学。)</li>
+</ul>
+</li>
+<li><p>JavaEE (WEB方向，WEB系统。)</p>
+<ul>
+<li><p>Java企业版(也是一套类库:也是别人写好的一套类库，只不过这套类库可以帮助我们完成企业级项目的开发，专门为企业内部提供解决方案的一套(多套)类库。)</p>
+</li>
+<li><p>别人写好的，你用就行了，用它可以开发企业级项目。</p>
+</li>
+<li><p>可以开发web系统。</p>
+</li>
+<li><p>Java比较火爆的就是这个lavaEE方向。</p>
+</li>
+</ul>
+</li>
+<li><p>JavaME</p>
+<ul>
+<li><p>Java微型版（还是一套类库，只不过这套类库帮助我们进行电子微型设备内核程序的开发)</p>
+</li>
+<li><p>机顶盒内核程序，吸尘器内核程序，电冰箱内核程序，电饭煲内核程序。。。 。 。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>JavaEE实际上包括很多种规范，13种规范，其中Servlet就是JavaEE规范之一。学Servlet还是Java语言。</p>
+</li>
+</ul>
+<h3 id="B-x2F-S架构的系统通信原理"><a href="#B-x2F-S架构的系统通信原理" class="headerlink" title="B&#x2F;S架构的系统通信原理"></a>B&#x2F;S架构的系统通信原理</h3><h4 id="WEB系统的访问过程"><a href="#WEB系统的访问过程" class="headerlink" title="WEB系统的访问过程"></a>WEB系统的访问过程</h4><ul>
+<li><p>第一步:打开浏览器。 </p>
+</li>
+<li><p>第二步:找到地址</p>
+</li>
+<li><p>第三步:输入一个合法的网址。</p>
+</li>
+<li><p>第四步:回车</p>
+</li>
+<li><p>第五步:在浏览器上会展示响应的结果。</p>
+</li>
+<li><p>关于域名:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.baidu.com/(%E7%BD%91%E5%9D%80)">https://www.baidu.com/(网址)</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.baidu.com是—个域名/">www.baidu.com是—个域名</a></li>
+<li>在浏览器地址栏上输入域名，回车之后，域名解析器会将域名解析出来一个具体的IP地址和端口号等。</li>
+<li>解析结果也许是: http:<strong>&#x2F;&#x2F;110.242.68.3:80</strong>&#x2F;index.html</li>
+</ul>
+</li>
+</ul>
+<h4 id="IP地址是啥"><a href="#IP地址是啥" class="headerlink" title="IP地址是啥?"></a>IP地址是啥?</h4><ul>
+<li>计算机在网络当中的一个身份证号。在同一个网络当中，IP地址是唯一的。</li>
+<li>A计算机要想和B计算机通信，首先你需要知道B计算机的IP地址，有了IP地址才能建立连接。</li>
+</ul>
+<h4 id="端口号是啥"><a href="#端口号是啥" class="headerlink" title="端口号是啥?"></a>端口号是啥?</h4><ul>
+<li>一个端口代表一个软件（一个端口代表一个应用，一个端口仅代表一个服务)。</li>
+<li>一个计算机当中有很多软件，每一个软件启动之后都有一个端口号。</li>
+<li>在同一个计算机上，端口号具有唯一性。</li>
+</ul>
+<h4 id="一个WEB系统的通信原理-通信步骤"><a href="#一个WEB系统的通信原理-通信步骤" class="headerlink" title="一个WEB系统的通信原理?通信步骤:"></a>一个WEB系统的通信原理?通信步骤:</h4><ul>
+<li><strong>第一步:用户输入网址(URL)</strong></li>
+<li><strong>第二步:域名解析器进行域名解析:<a target="_blank" rel="noopener" href="http://110.242.68.3/index.html">http://110.242.68.3:80/index.html</a></strong></li>
+<li><strong>第三步:浏览器软件在网络中搜索110.242.68.3这一台主机，直到找到这台主机。</strong></li>
+<li><strong>第四步:定位110.242.68.3这台主机上的服务器软件，因为是80端口，可以很轻松的定位到80端口对应的服务器软件。</strong></li>
+<li><strong>第五步:80端口对应的服务器软件得知浏览器想要的资源名是:index.html</strong></li>
+<li><strong>第六步∶服务器软件找到index.html文件，并且将index.html文件中的内容直接输出响应到浏览器上。</strong></li>
+<li><strong>第七步:浏览器接收到来自服务器的代码(HTML CSS JS)</strong></li>
+<li><strong>第八步:浏览器渲染，执行HTML CSS JS代码，展示效果。</strong></li>
+<li>如下图：你懂的</li>
+</ul>
+<p><img src="/2022/10/26/JAVAWEB-1/1.png" alt="image-20221022113622936"></p>
+<h3 id="关于WEB服务器软件"><a href="#关于WEB服务器软件" class="headerlink" title="关于WEB服务器软件"></a>关于WEB服务器软件</h3><h4 id="WEB服务器软件都有哪些呢-这些软件都是提前开发好的。"><a href="#WEB服务器软件都有哪些呢-这些软件都是提前开发好的。" class="headerlink" title="WEB服务器软件都有哪些呢?(这些软件都是提前开发好的。)"></a>WEB服务器软件都有哪些呢?(这些软件都是提前开发好的。)</h4><ul>
+<li>Tomcat (WEB服务器)</li>
+<li>jetty (WEB服务器)</li>
+<li>JBOSS(应用服务器)</li>
+<li>WebLogic(应用服务器)</li>
+<li>WebSphere(应用服务器)</li>
+</ul>
+<h4 id="应用服务器和WEB服务器的关系"><a href="#应用服务器和WEB服务器的关系" class="headerlink" title="应用服务器和WEB服务器的关系?"></a>应用服务器和WEB服务器的关系?</h4><ul>
+<li><strong>应用服务器实现了JavaEE的所有规范。(JavaEE有13个不同的规范。</strong>)</li>
+<li>WEB服务器只实现了JavaEE中的Servlet +JSP两个核心的规范。</li>
+<li>通过这个讲解说明了∶应用服务器是包含WEB服务器的。</li>
+<li>用过JBOSS服务器的同学应该很清楚，JBOSS中内嵌了一个Tomcat服务器。</li>
+</ul>
+<h4 id="Tomcat下载"><a href="#Tomcat下载" class="headerlink" title="Tomcat下载"></a>Tomcat下载</h4><ul>
+<li><p>apache官网地址: <a target="_blank" rel="noopener" href="https://www.apache.org/">https://www.apache.org/</a></p>
+</li>
+<li><p>tomcat官网地址: <a target="_blank" rel="noopener" href="https://tomcat.apache.org/">https://tomcat.apache.org</a></p>
+</li>
+<li><p>tomcat开源免费的轻量级WEB服务器。</p>
+</li>
+<li><p>tomcat还有另外一个名字: catalina (catalina是美国的一个岛屿，风景秀丽，据说作者是在这个风景秀丽的小岛上开发了一个轻量级的WEB服务器，体积小，运行速度快，因此tomcat又被称为catalina)</p>
+</li>
+<li><p>tomcat的logo是一只公猫（寓意表示Tomcat服务器是轻巧的，小巧的，果然，体积小，运行速度快，只实现了Servlet+JSP规范)</p>
+</li>
+<li><p>tomcat是java语言写的。 </p>
+</li>
+<li><p>tomcat服务器要想运行，必须先又jre (Java的运行时环境)</p>
+<ul>
+<li><p>自己配</p>
+</li>
+<li><p>JAVA_HOME&#x3D;C:lProgram Filesyavayjdk-17.0.1</p>
+</li>
+<li><p>PATH&#x3D;%JAVA_HOME%1bin</p>
+</li>
+<li><p>目前JAVA_HOME没有配置，思考一个问题，这样行不行呢?目前只运行java程序是没问题的。真的没问题吗?.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Tomcat服务器的安装:</p>
+<ul>
+<li>绿色版本的安装很简单，直接zip包解压即可。解压就是安装。</li>
+<li>我有一个好习惯，在C盘的根目录下新建一个dev目录，java开发所有相关的工具都安装到dev目录下，这样比较方便管理。(你随意)</li>
+</ul>
+<h3 id="启动Tomcat-必看"><a href="#启动Tomcat-必看" class="headerlink" title="启动Tomcat(必看)"></a>启动Tomcat(必看)</h3><ul>
+<li><strong>bin目录下有一个文件: startup.bat,通过它可以启动Tomcat服务器。</strong></li>
+<li><strong>xxx.bat文件是个什么文件? bat文件是windows操作系统专用的, bat文件是批处理文件，这种文件中可以编写大星的windows的dos命令，然后执行bat文件就相当于批量的执行dos命令。</strong></li>
+<li><strong>startup.sh，这个文件在windows当中无法执行，在Linux环境当中可以使用。在Linux环境下能够执行的是shell命令，大量的shell命令编写在shell文件当中，然后执行这个shell文件可以批量的执行shell命令。</strong></li>
+<li><strong>tomcat服务器提供了bat和sh文件，说明了这个tomcat服务器的通用性。</strong></li>
+<li><strong>分析startup.bat文件得出，执行这个命令，实际上最后是执行: catalina.bat文件。</strong></li>
+<li><strong>catalina.bat文件中有这样一行配置:MAINCLASS&#x3D;org.apache.catalina.startup.Bootstrap(这个类就是main方法所在的类。)</strong></li>
+<li><strong>tomcat服务器就是Java语言写的，既然是java语言写的，那么启动Tomcat服务器就是执行main方法。</strong></li>
+<li><strong>我们尝试打开dos命令窗口，在dos命令窗口中输入startup.bat来启动tomcat服务器。</strong></li>
+<li><strong>启动Tomcat服务器只配置path对应的bin目录是不行的。有两个环境变量需要配置:</strong><br><strong>JAVA_HOME&#x3D;IDK的根</strong><br><strong>CATALINA_HOME&#x3D;Tomcat服务器的根</strong></li>
+</ul>
+<p>关于Tomcat服务器的目录</p>
+<ul>
+<li>bin:这个目录是Tomcat服务器的命令文件存放的目录，比如:启动Tomcat，关闭Tomcat等。</li>
+<li>conf:这个目录是Tomcat服务器的配置文件存放目录。(server.xml文件中可以配置端口号，默认Tomcat端口是8080)o lib:这个目录是</li>
+<li>Tomcat服务器的核心程序目录，因为Tomcat服务器是Java语言编写的，这里的jar包里面都是class文件。</li>
+<li>lib:这个目录是Tomcat服务器的核心程序目录，因为Tomcat服务器是Java语言编写的，这里的jar包里面都是class文件。</li>
+<li>logs:Tomcat服务器的日志目录，Tomcat服务器启动等信息都会在这个目录下生成日志文件。</li>
+<li>temp: Tomcat服务器的临时目录。存储临时文件。</li>
+<li>webapps:这个目录当中就是用来存放大量的webapp (web application:..web应用)</li>
+<li>work:这个目录是用来存放ISP文件翻译之后的java文件以及编译之后的class文件。</li>
+</ul>
+<p>启动Tomcat: startup</p>
+<p><strong>关闭Tomcat:stop (shutdown.bat文件重命名为stop.bat，为什么?原因是shutdown命令和windows中的关机命令冲突。所以修改一下。)</strong></p>
+<p><img src="/2022/10/26/JAVAWEB-1/2.png" alt="image-20221022123754439"></p>
+<h2 id="实现一个最基本的web应用-这个web应用中没有java小程序"><a href="#实现一个最基本的web应用-这个web应用中没有java小程序" class="headerlink" title="实现一个最基本的web应用(这个web应用中没有java小程序)"></a>实现一个最基本的web应用(这个web应用中没有java小程序)</h2><ul>
+<li>第一步:找到CATALINA_HOMEwebapps目录，因为所有的webapp要放到webapps目录下。(没有为什么，这是Tomcat服务器的要求。如果不放到这里，Tomcat服务器找不到你的应用。)</li>
+<li>第二步:在CATALINA_HOMElwebapps目录下新建一个子目录，起名:oa这个目录名oa就是你这个webapp的名字。</li>
+<li>第三步:在oa目录下新建资源文件，例如: index.html，编写index.html文件的内容。</li>
+<li>第四步:启动Tomcat服务器</li>
+<li>第五步:打开浏览器，在浏览器地址栏上输入这样的URL:<ul>
+<li><a target="_blank" rel="noopener" href="http://127.0.0.1:8080/oa/index.html">http://127.0.0.1:8080/oa/index.html</a></li>
+</ul>
+</li>
+<li>思考—个问题:<ul>
+<li>我们在浏览器上直接输入一个URL，然后回车。这个动作和超链接一样吗?既然是一样的，我们完全可以使用超链接。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--注意以下的路径，以/开始，带项目名，是一个绝对路径。不需要添加: http:/ /127.0.0.1:8080--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/oa/login.htm7&quot;</span>&gt;</span>user login2&lt;/ a&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--多个层级也没有关系，正常访问即可。--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--注意:我们目前前端上的路径都以&quot;/&quot;开始的，都是加项目名的。--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/oa/test/debug/d .htm1&quot;</span>&gt;</span>d page<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><a target="_blank" rel="noopener" href="http://127.0.0.1:8080/oa/userList.html">http://127.0.0.1:8080/oa/userList.html</a><ul>
+<li>访问这个地址，可以展示一个用户列表页面。但是这个用户列表页面是写死在HTML文件当中的。这种资源我们称为静态资源。怎么能变成动态资源。显然需要连接数据库。</li>
+<li>连接数据库需要JDBC程序，也就是说需要编写Java程序连接数据库，数据库中有多少条记录，页面上就显示多少条记录，这种技术被称为动态网页技术。(动态网页技术并不是说页面中有flash动画。动态网页技术是说页面中的数据是动态的，根据数据库中数据的变化而变化。)</li>
+</ul>
+</li>
+</ul>
+<h2 id="对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议"><a href="#对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议" class="headerlink" title="对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议"></a>对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议</h2><p><img src="/2022/10/26/JAVAWEB-1/3.png" alt="image-20221022153841594"></p>
+<h4 id="有哪些角色-在整个BS结构的系统当中，有哪些人参与进去了"><a href="#有哪些角色-在整个BS结构的系统当中，有哪些人参与进去了" class="headerlink" title="有哪些角色(在整个BS结构的系统当中，有哪些人参与进去了)"></a>有哪些角色(在整个BS结构的系统当中，有哪些人参与进去了)</h4><ul>
+<li>浏览器软件的开发团队（(浏览器软件太多了︰谷歌浏览器、火狐浏览器、IE浏览器…)</li>
+<li>WEB Server的开发团队(WEB Server这个软件也是太多了:Tomcat、Jetty、WebLogic、JBOSS、WebSpher.….）</li>
+<li>DB Server的开发团队(DB Server这个软件也是太多了:Oracle、MySQL….…</li>
+<li>webapp的开发团队(WEB应用是我们做为JavaWEB程序员开发的)</li>
+</ul>
+<h4 id="角色和角色之间需要遵守哪些规范，哪些协议"><a href="#角色和角色之间需要遵守哪些规范，哪些协议" class="headerlink" title="角色和角色之间需要遵守哪些规范，哪些协议"></a>角色和角色之间需要遵守哪些规范，哪些协议</h4><ul>
+<li>webapp的开发团队和WEB Server的开发团队之间有一套规范: JavaEE规范之—Servlet规范。</li>
+<li>Servlet规范的作用是什么?</li>
+<li>WEB Server和webapp解耦合。</li>
+<li>Browser 和 WebServer之间有一套传输协议:<strong>HTTP协议。</strong>(超文本传输协议。)（<strong>计算机与计算机的通信</strong>）</li>
+<li>webapp开发团队和DB Server的开发团队之间有一套规范:JDBC规范。</li>
+</ul>
+<p><img src="/2022/10/26/JAVAWEB-1/4.png" alt="image-20221022155701822"></p>
+<p><strong>之所以可以解耦合就是因为有协议，有规范</strong></p>
+<p>编译时只调用接口的方法，但在运行时是哪个对象就调用该对象里的方法</p>
+<h2 id="模拟Servlet本质"><a href="#模拟Servlet本质" class="headerlink" title="模拟Servlet本质"></a>模拟Servlet本质</h2><ul>
+<li>充当SUN公司的角色，制定Servlet规范<ul>
+<li>javax.servlet.Servlet接口</li>
+</ul>
+</li>
+<li>充当Tomcat服务器的开发者</li>
+<li>充当Webapp的开发者<ul>
+<li>BankServlet implements Servlet</li>
+<li>UserListServlet implements Servlet</li>
+<li>UserLoginServlet implements Servlet</li>
+</ul>
+</li>
+<li>通过我们的分析:<ul>
+<li>对于我们javaweb程序员来说，我们只需要做两件事:<ul>
+<li>编写一个类实现Servlet接口。</li>
+<li>将编写的类配置到配置文件中，在配置文件中:指定请求路径和类名的关系。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>注意:<ul>
+<li>这个配置文件的文件名不能乱来。固定的。</li>
+<li>这个配置文件的存放路径不能乱来。固定的。</li>
+<li>文件名、文件路径都是SUN公司制定的Servlet规范中的明细。</li>
+</ul>
+</li>
+<li>严格意义上来说Servlet其实并不是简单的一个接口:<ul>
+<li>Servlet规范中规定了:<ul>
+<li>一个合格的webapp应该是—个怎样的目录结构。</li>
+<li>一个合格的webapp应该有一个怎样的配置文件。</li>
+<li>一个合格的webapp配置文件路径放在哪里。</li>
+<li>一个合格的webapp中java程序放在哪里。这些都是Servlet规范中规定的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Tomcat服务器要遵循Servlet规范。JavaWEB程序员也要遵循这个Servlet规范。这样Tomcat服务器和webapp才能解耦合。</li>
+</ul>
+<h5 id="SUN"><a href="#SUN" class="headerlink" title="SUN"></a>SUN</h5><p>&#x2F;*<br>我们现在充当的角色是SUN公司。<br>SUN公司把servlet接口&#x2F;规范制定出来了。<br>*&#x2F;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> javax.servlet;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Servlet</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//一个专门提供服务的方法</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">service</span> <span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="webapp"><a href="#webapp" class="headerlink" title="webapp"></a>webapp</h5><p>&#x2F;&#x2F;充当的角色发生了改变: webapp开发者<br>&#x2F;&#x2F;只要是我们webapp开发者写的xxxservlet都要实现servlet接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bjpowernode.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.Servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BankServlet</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//充当的角色发生了改变: webapp开发者</span></span><br><span class="line">    <span class="comment">//只要是我们webapp开发者写的xxxservlet都要实现servlet接口</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;BankServlet &#x27;s service...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bjpowernode.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.Servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserListServlet</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span>&#123;</span><br><span class="line">    <span class="comment">//充当的角色发生了改变: webapp开发者</span></span><br><span class="line">    <span class="comment">//只要是我们webapp开发者写的xxxservlet都要实现servlet接口</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;UserListServlet &#x27;s service...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bjpowernode.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.Servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserLoginServlet</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span> &#123;</span><br><span class="line">    <span class="comment">//充当的角色发生了改变: webapp开发者</span></span><br><span class="line">    <span class="comment">//只要是我们webapp开发者写的xxxservlet都要实现servlet接口</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;UserLoginServlet &#x27;s service...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.apache;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.Servlet;</span><br><span class="line"><span class="keyword">import</span> java.io.FileReader;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="comment">//充当Tomcat服务器的开发者</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Tomcat</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println ( <span class="string">&quot;Tomcat服务器启动成功，开始接收用户的访问。&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//简单的使用scanner来模拟一下用户的请求</span></span><br><span class="line">        <span class="comment">//用户访问服务器是通过浏览器上的&quot;请求路径&quot;</span></span><br><span class="line">        <span class="comment">//也就是说用户请求路径不同，后台执行的servlet不同。</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">            /userList       UserListservlet</span></span><br><span class="line"><span class="comment">            /login          UserLoginservlet</span></span><br><span class="line"><span class="comment">            /bank           Bankservlet</span></span><br><span class="line"><span class="comment">            /..........</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line"></span><br><span class="line">        System. out.print( <span class="string">&quot;请输入您的访问路径:&quot;</span>);</span><br><span class="line">        <span class="type">Scanner</span> <span class="variable">s</span> <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">Scanner</span> (System.in) ;</span><br><span class="line">        <span class="comment">//用户的请求路径   /bbbb</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> s.nextLine();  <span class="comment">// Tomcat服务器已经获取到了用户的请求路径了</span></span><br><span class="line">        <span class="comment">//Tomcat服务器应该通过用户的请求路径找对应的Xxxservlet</span></span><br><span class="line">        <span class="comment">//请求路径和xxxservlet之间的关系应该由谁指定呢?</span></span><br><span class="line">        <span class="comment">//对于Tomcat服务器来说需要解析配置文件</span></span><br><span class="line">        <span class="type">FileReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileReader</span> ( <span class="string">&quot;web.properties&quot;</span>);</span><br><span class="line">        <span class="type">Properties</span> <span class="variable">pro</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span> () ;pro.load (reader) ;</span><br><span class="line">        reader.close () ;</span><br><span class="line">        <span class="comment">//通过key获取value</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">className</span> <span class="operator">=</span> pro.getProperty (key) ;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//通过反射机制创建对象</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName (className) ;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span>clazz.newInstance() ;   <span class="comment">// obj的类型对于Tomcat服务器开发人员来说不知道。</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//但是Tomcat服务器的开发者知道，你写的xXXXservlet一定实现了servlet接口</span></span><br><span class="line">        <span class="type">Servlet</span> <span class="variable">servlet</span> <span class="operator">=</span> (Servlet) obj;</span><br><span class="line">        servlet.service () ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="配置文件-暂时用properties"><a href="#配置文件-暂时用properties" class="headerlink" title="配置文件(暂时用properties)"></a>配置文件(暂时用properties)</h5><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">/aaaa</span>=<span class="string">com.bjpowernode.servlet.UserListServlet</span></span><br><span class="line"><span class="attr">/bbbb</span>=<span class="string">com.bjpowernode.servlet.UserLoginServlet</span></span><br><span class="line"><span class="attr">/cccc</span>=<span class="string">com.bjpowernode.servlet.BankServlet</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/10/26/JAVAWEB-1/5.png" alt="image-20221022171042990"></p>
+<h2 id="Servlet规范是一个什么规范"><a href="#Servlet规范是一个什么规范" class="headerlink" title="Servlet规范是一个什么规范?"></a>Servlet规范是一个什么规范?</h2><ul>
+<li><p>遵循Serulet规范的webapp，这个webapp就可以放在不同的WEB服务器中运行。(因为这个webapp是遵循Servlet规范的。)</p>
+</li>
+<li><p>Servlet规范包括什么呢?</p>
+<ul>
+<li><p>规范了哪些接口规范了哪些类</p>
+</li>
+<li><p>规范了一个web应用中应该有哪些配置文件</p>
+</li>
+<li><p>规范了一个web应用中配置文件的名字</p>
+</li>
+<li><p>规范了一个web应用中配置文件存放的路径</p>
+</li>
+<li><p>规范了一个web应用中配置文件的内容</p>
+</li>
+<li><p>规范了一个合法有效的web应用它的目录结构应该是怎样的。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="开发一个带有Servlet的webapp-重点"><a href="#开发一个带有Servlet的webapp-重点" class="headerlink" title="开发一个带有Servlet的webapp(重点)"></a>开发一个带有Servlet的webapp(重点)</h3><h5 id="开发步骤是怎样的"><a href="#开发步骤是怎样的" class="headerlink" title="开发步骤是怎样的?"></a>开发步骤是怎样的?</h5><ul>
+<li><p>第一步:在webapps目录下新建一个目录，起名crm (这个crm就是webapp的名字)。当然，也可以是其它项目，比如银行项<br>目，可以创建—个目录bank，办公系统可以创建─个oa。</p>
+<ul>
+<li>注意:crm就,是这个webapp的根</li>
+</ul>
+</li>
+<li><p>第二步:在webapp的根下新建一个目录:WEB-INF</p>
+<ul>
+<li>注意:这个目录的名字是Servlet规范中规定的，必须全部大写，必须一模一样。必须的必须。</li>
+</ul>
+</li>
+<li><p>第三步:在WEB-INF目录下新建一个目录: classes</p>
+<ul>
+<li>注意:这个目录的名字必须是全部小写的classes。这也是Servlet规范中规定的。另外这个目录下一定存放的是Java程序编译之后的class文件(这里存放的是字节码文件)。</li>
+</ul>
+</li>
+<li><p>第四步:在WEB-INF目录下新建—个目录:lib</p>
+<ul>
+<li>注意:这个目录不是必须的。但如果一个webapp需要第三方的jar包的话，这个jar包要放到这个lib目录下，这个目录的名字也不能随意编写，必须是全部小写的lib。例如java语言连接数据库需要数据库的驱动jar包。那么这个jar包就一定要放到lib目录下。这Servlet规范中规定的。</li>
+</ul>
+</li>
+<li><p>第五步:在WEB-INF目录下新建一个文件: web.xml</p>
+<ul>
+<li><p>注意:这个文件是必须的，这个文件名必须叫做web.xml。这个文件必须放在这里。一个合法的webapp，web.xml文件是必须的，这个web.xml文件就是一个配置文件，在这个配置文件中描述了请求路径和Servlet类之间的对照关系。</p>
+</li>
+<li><p>这个文件最好从其他的webapp中拷贝，最好别手写。没必要。复制粘贴</p>
+</li>
+<li><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
+  version=&quot;4.0&quot;
+  metadata-complete=&quot;true&quot;&gt;
+
+&lt;/web-app&gt;
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 第六步:编写一个Java程序，这个小ava程序也不能随意开发，这个小java程序必须实现Servlet接口。</span><br><span class="line"></span><br><span class="line">  - 这个Servlet接口不在JDK当中。(因为Serlet不是JavaSE了。Servlet属于JavaEE，是另外的一套类库。)-</span><br><span class="line">  - Servlet接(Servlet.class文件）是Oracle提供的。(最原始的是sun公司提供的。)</span><br><span class="line">  - Servlet接口是JavaEE的规范中的一员。</span><br><span class="line">  - Tomcat服务器实现了Servlet规范，所以Tomcat服务器也需要使用Serlet接口。Tomcat服务器中应该有这个接口，Tomcat服务器的CATALINA_HOME\lib目录下有一个servlet-api.jar，解压这个servlet-api.jar之后，你会看到里面有一个Servlet.class文件。</span><br><span class="line">  - 重点:从lakartaEE9开始，Servlet接口的全名变了: jakarta.servlet.Servlet</span><br><span class="line">  - 注意:编写这个ava小程序的时候，java源代码你愿意在哪里就在哪里，位置无所谓，你只需要将java源代码编译之后的class文件放到classes目录下即可。</span><br><span class="line"></span><br><span class="line">- 第七步:编译我们编写的HelloSerxlet</span><br><span class="line"></span><br><span class="line">  - 重点:你怎么能让你的HelloServlet编译通过呢?配置环境变量CLASSPATH CLASSPATH=.;C:\devlapache-tomcat-10.0.12\lib\servlet-api.jar</span><br><span class="line">  - 思考问题:以上配置的CLASSPATH和Tomcat服务器运行有没有关系?</span><br><span class="line">    - 没有任何关系，以上配置这个环境变量只是为了让你的HelloServlet能够正常编译生成class文件。</span><br><span class="line">    - Tomcat能找到，但是这里我们没有用Tomcat</span><br><span class="line"></span><br><span class="line">- 第八步:将以上编译之后的HelloServlet.class文件拷贝到WEB-INF\classes目录下。</span><br><span class="line"></span><br><span class="line">- 第九步:在web.xml文件中编写配置信息，让&quot;请求路径“和&quot;Servlet类名&quot;关联在一起。</span><br><span class="line"></span><br><span class="line">  - 这一步用专业术语描述:在web.xml文件中注册Servlet类。</span><br><span class="line"></span><br><span class="line">  - **使用了反射机制&lt;servlet-class&gt;com.bjpowernode.servlet.He1loservlet&lt;/servlet-class&gt;**</span><br><span class="line"></span><br><span class="line">  - ```java</span><br><span class="line">    public class HelloServlet &#123;</span><br><span class="line">        public class HelloServlet implements Servlet &#123;</span><br><span class="line">            //5个方法</span><br><span class="line">            public void init(ServletConfig config) throws ServletException &#123;</span><br><span class="line">            &#125;</span><br><span class="line">    </span><br><span class="line">            public void service(ServletRequest request, ServletResponse response)</span><br><span class="line">                    throws servletException, IOException &#123;</span><br><span class="line">                System.out.println(&quot;My First Servlet, Hello Servlet&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">    </span><br><span class="line">            public void destroy() &#123;</span><br><span class="line">            &#125;</span><br><span class="line">    </span><br><span class="line">            public String getServletInfo() &#123;</span><br><span class="line">                return &quot;&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">    </span><br><span class="line">            public Servletconfig getServletConfig() &#123;</span><br><span class="line">                return nul1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+</code></pre>
+</li>
+<li><p>&#96;&#96;&#96;xml</p>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<p><web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://xmlns.jcp.org/xml/ns/javaee
+                  http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0" metadata-complete="true"></web-app></p>
+<pre><code>&lt;!--servlet描述信息--&gt;
+&lt;!--任何一个servlet都对应一个servlet-mapping --&gt;
+&lt;servlet&gt;
+    &lt;servlet-name&gt;fdsafdsagfdsafdsa&lt;/servlet-name&gt;&lt;! --这个位置必须是带有包名的全限定类名--&gt;
+    &lt;servlet-class&gt;com.bjpowernode.servlet.He1loservlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;!--servlet映射信息--&gt;
+&lt;servlet-mapping&gt;
+    &lt;!--这个也是随便的，不过这里写的内容要和上面的一样。--&gt;
+    &lt;servlet-name&gt;fdsafdsagfdsafdsa&lt;/servlet-name&gt;
+    &lt;!--这里需要一个路径--&gt;
+    &lt;!--这个路径唯一的要求是必须以 / 开始--&gt;
+    &lt;!--当前这个路径可以随便写--&gt;
+    &lt;url-pattern&gt;/fdsa/fd/saf/d/sa/fd/sa/fd&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+</code></pre>
+ 
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  - ![image-20221022183943835](./JAVAWEB-1/6.png)</span><br><span class="line"></span><br><span class="line">- 第十步:启动Tomcat服务器</span><br><span class="line"></span><br><span class="line">- 第十一步:打开浏览器，在浏览器地址栏上输入一个url，这个URL必须是:</span><br><span class="line"></span><br><span class="line">  - http://127.0.0.1:8080/crm/fdsa/fd/saf/d/sa/fd/sa/fd</span><br><span class="line">  - 非常重要的一件事:浏览器上的请求路径不能随便写，这个请求路径必须和web.xml文件中的urlpattern一致。</span><br><span class="line">  - 注意:浏览器上的请求路径和web.xml文件中的url-pattern的唯一区别就是∶浏览器上的请求路径带项目名:/crm</span><br><span class="line"></span><br><span class="line">- 浏览器上编写的路径太复杂，可以使用超链接。(非常重要: html页面只能放到WEB-INF目录外面。)</span><br><span class="line"></span><br><span class="line">- 以后不需要我们编写main方法了。tomcat服务器负责调用main方法，Tomcat服务器启动的时候执行的就是main方法。我们javaweb程序员只需要编写Servlet接口的实现类，然后将其注册到web.xml文件中，即可。</span><br><span class="line"></span><br><span class="line">- 总结一下:一个合法的webapp目录结构应该是怎样的?</span><br><span class="line"></span><br><span class="line">  ```xml</span><br><span class="line">  webapproot</span><br><span class="line">  |------WEB-INF</span><br><span class="line">  		| ------classes(存放字节码)</span><br><span class="line">  		| ------1ib(第三方jar包)</span><br><span class="line">  		| ------web.xm1(注册servlet)</span><br><span class="line">  |------htm1</span><br><span class="line">  |------css</span><br><span class="line">  |------javascriptl------image</span><br><span class="line">  .......</span><br><span class="line">  </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h5 id="浏览器发送请求，到最终服务器调用Servlet中的方法，是怎样的一个过程"><a href="#浏览器发送请求，到最终服务器调用Servlet中的方法，是怎样的一个过程" class="headerlink" title="浏览器发送请求，到最终服务器调用Servlet中的方法，是怎样的一个过程?"></a>浏览器发送请求，到最终服务器调用Servlet中的方法，是怎样的一个过程?</h5><ul>
+<li>(以下这个过程描述的很粗糙。其中还有很多步骤我省略了。)</li>
+<li>用户输入URL，或者直接点击超链接: <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/crm/fdsa/fd/saf/d/sa/fd/sa/fd%E7%84%B6%E5%90%8E">http://127.0.0.1:8080/crm/fdsa/fd/saf/d/sa/fd/sa/fd然后</a></li>
+<li>Tomcat服务器接收到请求，截取路径: lcrm&#x2F;fdsa&#x2F;fd&#x2F;saf&#x2F;d&#x2F;sa&#x2F;fd&#x2F;sa&#x2F;fd</li>
+<li>Tomcat服务器找到crm项目</li>
+<li>Tomcat服务器在web.xm文件中查找&#x2F;fdsa&#x2F;fd&#x2F;saf&#x2F;d&#x2F;sa&#x2F;fd&#x2F;sa&#x2F;fd对应的Servle是:com.bipowernode.servlet.HelloServlet</li>
+<li>Tomcat服务器通过反射机制，创建com.bjpowernode.servlet.HelloServlet的对象。</li>
+<li>Tomcat服务器调用com.bjpowernode.servlet.HelloServlet对象的service方法。</li>
+</ul>
+<h5 id="关于JavaEE的版本"><a href="#关于JavaEE的版本" class="headerlink" title="关于JavaEE的版本"></a>关于JavaEE的版本</h5><ul>
+<li>JavaEE目前最高版本是JavaEE8</li>
+<li>JavaEE被Oracle捐献了，Oracle将JavaEE规范捐献给Apache了。</li>
+<li>Apache巴JavaEE换名了，以后不叫avaEE了，以后叫做jakartaEE。</li>
+<li>以后没有JavaEE了。以后都叫做JakartaEE。</li>
+<li>JavaEE8版本升级之后的””LavaEE 9”，不再是”lavaEE9”这个名了，叫做lakartaEE9</li>
+</ul>
+<h5 id="解决Tomcat服务器在DOs命令窗口中的乱码问题（控制台乱码"><a href="#解决Tomcat服务器在DOs命令窗口中的乱码问题（控制台乱码" class="headerlink" title="解决Tomcat服务器在DOs命令窗口中的乱码问题（控制台乱码)"></a>解决Tomcat服务器在DOs命令窗口中的乱码问题（控制台乱码)</h5><p>将CATALINA_HOME&#x2F;conf&#x2F;logging.properties文件中的内容修改如下:<br>java.util.logging.ConsoleHandler.encoding &#x3D; GBK</p>
+<h5 id="向浏览器响应一段HTML代码"><a href="#向浏览器响应一段HTML代码" class="headerlink" title="向浏览器响应一段HTML代码"></a>向浏览器响应一段HTML代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(ServletRequest request, ServletResponse response)</span></span><br><span class="line">                <span class="keyword">throws</span> servletException, IOException &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;My First Servlet, Hello Servlet&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//设置响应的内容类型是普通文本或html代码</span></span><br><span class="line">            <span class="comment">//需要在获取流对象之前设置,有效。</span></span><br><span class="line">            response.setContentType ( <span class="string">&quot;text/ html&quot;</span> ) ;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//怎么将一个信息直接输出到浏览器上?</span></span><br><span class="line">            <span class="comment">// 需要使用servletResponse接口:response</span></span><br><span class="line">            <span class="comment">// response表示响应:从服务器向浏览器发送数据叫做响应。</span></span><br><span class="line">            <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> response.getWriter () ;</span><br><span class="line">            out.print ( <span class="string">&quot;Hello Servlet, You are my first servlet ! &quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//设置响应的内容类型时不要在获取流之后设置。</span></span><br><span class="line">            <span class="comment">//response.setContentType ( &quot;text/html&quot;) ;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment">//浏览器是能够识别html代码的，那我们是不是应该输出一段HTM代码呢?</span></span><br><span class="line">            out.print ( <span class="string">&quot;&lt;h1&gt;hello servlet，你好servlet&lt;/h1&gt;&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment">//这是一个输出流,负责输出字符串到浏览器</span></span><br><span class="line">            <span class="comment">//这个输出流不需要我们刷新，也不需要我们关闭，这些都由Tomcat来维护。</span></span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            out.flush () ;</span></span><br><span class="line"><span class="comment">            out.close() ;</span></span><br><span class="line"><span class="comment">            */</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="在Servlet中连接数据库，怎么做"><a href="#在Servlet中连接数据库，怎么做" class="headerlink" title="在Servlet中连接数据库，怎么做?"></a>在Servlet中连接数据库，怎么做?</h5><ul>
+<li>Servlet是Java程序，所以在Servlet中完全可以编写JDBC代码连接数据库。</li>
+<li>在一个webapp中去连接数据库，需要将驱动jar包放到WEB-INF&#x2F;Iib目录下。(com.mysql.cj.jdbc.Driver这个类就在驱动jar包当中。)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StudentServlet</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(ServletRequest request, ServletResponse response)</span></span><br><span class="line">                <span class="keyword">throws</span> servletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">            response.setContentType ( <span class="string">&quot;text/html&quot;</span> ) ;</span><br><span class="line">            <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> response.getWriter () ;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//编写JDBC代码,连接数据库,查询所有学生信息。</span></span><br><span class="line">            <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="type">PreparedStatement</span> <span class="variable">ps</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="type">ResultSet</span> <span class="variable">rs</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//注册驱动</span></span><br><span class="line">                Class.forName ( <span class="string">&quot;com. mysql.cj.jdbc. Driver&quot;</span> ) ;</span><br><span class="line">                <span class="comment">//获取连接</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> <span class="string">&quot;jdbc:mysql: //localhost: 3306/bjpowernode&quot;</span> ;</span><br><span class="line">                <span class="type">String</span> <span class="variable">user</span> <span class="operator">=</span> <span class="string">&quot;root&quot;</span> ;</span><br><span class="line">                <span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> <span class="string">&quot;root&quot;</span>;</span><br><span class="line">                conn = DriverManager. getConnection(url ,user,password) ;</span><br><span class="line">                <span class="comment">//获取预编译的数据库操作对象</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;select no , name from t_student&quot;</span> ;</span><br><span class="line">                ps =conn. prepareStatement(sql);</span><br><span class="line">                <span class="comment">//执行SQL</span></span><br><span class="line">                rs = ps.executeQuery ();</span><br><span class="line">                <span class="comment">//处理查询结果集</span></span><br><span class="line">                <span class="keyword">while</span>(rs.next())&#123;</span><br><span class="line">                    <span class="type">String</span> <span class="variable">no</span> <span class="operator">=</span> rs.getString ( <span class="string">&quot;no&quot;</span> );</span><br><span class="line">                    <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> rs.getString ( <span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">//                  System.out.println (no + &quot;，&quot; + name) ;</span></span><br><span class="line">                    out.print (no + <span class="string">&quot;, &quot;</span> + name + <span class="string">&quot;&lt;br&gt;&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                e.printStackTrace () ;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="comment">//释放资源</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (rs != <span class="literal">null</span>) &#123;</span><br><span class="line">                        rs.close();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (ps != <span class="literal">null</span>) &#123;</span><br><span class="line">                        ps.close();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (conn != <span class="literal">null</span>) &#123;</span><br><span class="line">                        conn.close();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="在集成开发环境当中开发Servlet程序"><a href="#在集成开发环境当中开发Servlet程序" class="headerlink" title="在集成开发环境当中开发Servlet程序"></a>在集成开发环境当中开发Servlet程序</h5><ul>
+<li><p>集成开发工具很多，其中目前使用比较多的是:</p>
+<ul>
+<li>Intelli lDEA (这个居多，IDEA在提示功能方面要强于Eclipse，也就是说IDEA使用起来比Eclipse更加智能，更好用。JetBrain公<br>司开发的。收费的。)</li>
+<li>Eclipse(这个少一些)，Eclipse目前还是有团队使用，只不过处于减少的趋势，自己从事工作之后，可能会遇到。Eclipse是IBM团队开发的。Eclipse寓意是“日食”。”日食”表示将太阳吃掉。太阳是SUN。IBM团队开发Eclipse的寓意是吞并SUN公司，但是2009年的时候SUN公司被Oracle公司并购了。IBM并没有成功并购SUN公司。</li>
+</ul>
+</li>
+<li><p>使用IDEA集成开发工具开发Servlet</p>
+<ul>
+<li><p>第一步: New Project(我比较习惯先创建一个Empty Project【空工程】，然后在空工程下新建Module【模块】，这不是必须的，只是—种习惯，你可以直接新建非空的Project)</p>
+</li>
+<li><p>第二步:新建模块(File –&gt; new –&gt; Module…)</p>
+<ul>
+<li>这里新建的是一个普通的lavaSE模块(这里先不要新建Java Enterprise模块)</li>
+<li>这个Module自动会被放在javaweb的project下面。</li>
+<li>这个Module起名: servlet01</li>
+</ul>
+</li>
+<li><p>第三步:让Module变成lawaEE的模块。(让Module变成webapp的模块。符合webapp规范。符合Servlet规范的Module)</p>
+<ul>
+<li>在Module上点击右键:Add Framework Support…(添加框架支持)</li>
+<li>在弹出的窗口中，选择Web Application(选择的是webapp的支持)</li>
+<li>选择了这个webapp的支持之后，IDEA会自动给你生成一个符合Servlet规范的webpp目录结构。</li>
+<li><strong>重点，需要注意的:在IDEA工具中根据Web Application模板生成的目录中有一个web目录，这个目录就代表webapp的根</strong></li>
+</ul>
+</li>
+<li><p>第四步(非必须)︰根据Web Application生成的资源中有index.jsp文件，这里我选择删除这个index.jsp文件。</p>
+</li>
+<li><p>第五步:编写Servlet (StudentServlet)</p>
+<ul>
+<li>class StudentServlet implements Servlet</li>
+<li>这个时候发现Servlet.class文件没有。怎么办?将CATALINA_HOME&#x2F;lib&#x2F;servlet-api.jar和jsp-api.jar添加到classpath当中<br>(这里的classpath说的是IDEA的classpath)<ul>
+<li>File –&gt; Project Structrue –&gt; Modules –&gt;+加号–&gt;Add JARS….</li>
+</ul>
+</li>
+<li>实现jakarta.servlet.Servlet接口中的5个方法。</li>
+</ul>
+</li>
+<li><p>第六步:在Servlet当中的service方法中编写业务代码（我们这里连接数据库了。)</p>
+</li>
+<li><p>第七步:在WEB-INF目录下新建了一个子目录: lib(这个目录名可不能随意，必须是全部小写的lib)，<strong>并且将连接数据库的驱动jar包放到lib目录下。</strong></p>
+</li>
+<li><p>第八步:在web.xml文件中完成StudentServlet类的注册。(请求路径和Servlet之间对应起来)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">version</span>=<span class="string">&quot;4.0&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>studentServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.bjpowernode.javaweb.servlet.StudentServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>studentServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlet/student<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>第九步:给一个html页面，在HTML页面中编写一个超链接，用户点击这个超链接，发送请求，Tomcat执行后台的StudentServlet。</p>
+<ul>
+<li><p>student.html</p>
+</li>
+<li><p>这个文件不能放到WEB-INF目录里面，只能放到WEB-INF目录外面。 student.html文件的内容</p>
+</li>
+<li><pre><code class="xml">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;student page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!--这里的项目名是/xmm ,无法动态获取,先写死--&gt;
+    &lt;a href=&quot; /xmm/servlet/student&quot;&gt;student list&lt;/a&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>第十步:让IDEA工具去关联Tomcat服务器。关联的过程当中将webapp部署到Tomcat服务器当中。</p>
+<ul>
+<li>IDEA工具右上角，绿色小锤子右边有一个: Add Configuration</li>
+<li>左上角加号，点击Tomcat Server –&gt; local</li>
+<li>在弹出的界面中设置服务器Server的参数（基本上不用动)</li>
+<li>在当前窗口中有一个Deployment (点击这个用来部署webapp)，继续点击加号，部署即可。修改Application context为: &#x2F;xmm</li>
+</ul>
+</li>
+<li><p>第十一步:启动Tomcat服务器</p>
+<ul>
+<li>在右上角有绿色的箭头，或者绿色的小虫子，点击这个绿色的小虫子，可以采用debug的模式启动Tomcat服务器。</li>
+<li>我们开发中建议适用debug模式启动Tomcat</li>
+</ul>
+</li>
+<li><p>第十二步:打开浏览器，在浏览器地址栏上输入:<a target="_blank" rel="noopener" href="http://localhost:8080/xmm">http://localhost:8080/xmm</a></p>
+</li>
+</ul>
+<p>代码：和上面一样</p>
+<p>一些图片</p>
+<p><img src="/2022/10/26/JAVAWEB-1/7.png" alt="image-20221022194740875"></p>
+<p><img src="/2022/10/26/JAVAWEB-1/8.png" alt="image-20221022203459310"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Barry</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/10/26/JAVAWEB-1/">http://example.com/2022/10/26/JAVAWEB-1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Barry</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web/">web</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/1p/wallhaven-1pj2k3.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/26/JAVAWEB-2/"><img class="prev-cover" src="https://w.wallhaven.cc/full/d6/wallhaven-d65dxg.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">JAVAWEB(2)</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/08/%E6%B3%A8%E8%A7%A3-%E4%B8%80/"><img class="next-cover" src="https://w.wallhaven.cc/full/6o/wallhaven-6o9e1q.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">注解(一)</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/myfile/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Barry</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Servlet"><span class="toc-number">1.</span> <span class="toc-text">Servlet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">关于系统架构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88%E5%BD%A2%E5%BC%8F"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.系统架构包括什么形式?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-C-x2F-S%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.C&#x2F;S架构?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-B-x2F-S%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.B&#x2F;S架构?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-C-x2F-S%E5%92%8CB-x2F-S%E7%BB%93%E6%9E%84%E7%9A%84%E7%B3%BB%E7%BB%9F-%E5%93%AA%E4%B8%AA%E5%A5%BD%EF%BC%8C%E5%93%AA%E4%B8%AA%E4%B8%8D%E5%A5%BD"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.C&#x2F;S和B&#x2F;S结构的系统,哪个好，哪个不好?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E6%B3%A8%E6%84%8F%E4%BA%86-%E5%BC%80%E5%8F%91B-x2F-S%E7%BB%93%E6%9E%84%E7%9A%84%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%85%B6%E5%AE%9E%E5%B0%B1%E6%98%AF%E5%BC%80%E5%8F%91%E7%BD%91%E7%AB%99%EF%BC%8C%E5%85%B6%E5%AE%9E%E5%B0%B1%E6%98%AF%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AAWEB%E7%B3%BB%E7%BB%9F%E3%80%82"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.注意了:开发B&#x2F;S结构的系统，其实就是开发网站，其实就是开发一个WEB系统。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-JavaEE%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.1.6.</span> <span class="toc-text">6.JavaEE是什么?</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-x2F-S%E6%9E%B6%E6%9E%84%E7%9A%84%E7%B3%BB%E7%BB%9F%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">B&#x2F;S架构的系统通信原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WEB%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BF%E9%97%AE%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">WEB系统的访问过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IP%E5%9C%B0%E5%9D%80%E6%98%AF%E5%95%A5"><span class="toc-number">1.2.2.</span> <span class="toc-text">IP地址是啥?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E5%8F%B7%E6%98%AF%E5%95%A5"><span class="toc-number">1.2.3.</span> <span class="toc-text">端口号是啥?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%B8%AAWEB%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86-%E9%80%9A%E4%BF%A1%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.2.4.</span> <span class="toc-text">一个WEB系统的通信原理?通信步骤:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EWEB%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">关于WEB服务器软件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WEB%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%91%A2-%E8%BF%99%E4%BA%9B%E8%BD%AF%E4%BB%B6%E9%83%BD%E6%98%AF%E6%8F%90%E5%89%8D%E5%BC%80%E5%8F%91%E5%A5%BD%E7%9A%84%E3%80%82"><span class="toc-number">1.3.1.</span> <span class="toc-text">WEB服务器软件都有哪些呢?(这些软件都是提前开发好的。)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%92%8CWEB%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.2.</span> <span class="toc-text">应用服务器和WEB服务器的关系?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tomcat%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.3.3.</span> <span class="toc-text">Tomcat下载</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8Tomcat-%E5%BF%85%E7%9C%8B"><span class="toc-number">1.4.</span> <span class="toc-text">启动Tomcat(必看)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84web%E5%BA%94%E7%94%A8-%E8%BF%99%E4%B8%AAweb%E5%BA%94%E7%94%A8%E4%B8%AD%E6%B2%A1%E6%9C%89java%E5%B0%8F%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">实现一个最基本的web应用(这个web应用中没有java小程序)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E4%B8%80%E4%B8%AA%E5%8A%A8%E6%80%81%E7%9A%84web%E5%BA%94%E7%94%A8%E6%9D%A5%E8%AF%B4%EF%BC%8C%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E7%9A%84%E8%BF%87%E7%A8%8B%E6%9C%89%E5%A4%9A%E5%B0%91%E4%B8%AA%E8%A7%92%E8%89%B2%E5%8F%82%E4%B8%8E%EF%BC%8C%E8%A7%92%E8%89%B2%E5%92%8C%E8%A7%92%E8%89%B2%E4%B9%8B%E9%97%B4%E6%9C%89%E5%A4%9A%E5%B0%91%E4%B8%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.</span> <span class="toc-text">对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E5%93%AA%E4%BA%9B%E8%A7%92%E8%89%B2-%E5%9C%A8%E6%95%B4%E4%B8%AABS%E7%BB%93%E6%9E%84%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%BD%93%E4%B8%AD%EF%BC%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BA%BA%E5%8F%82%E4%B8%8E%E8%BF%9B%E5%8E%BB%E4%BA%86"><span class="toc-number">3.0.1.</span> <span class="toc-text">有哪些角色(在整个BS结构的系统当中，有哪些人参与进去了)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%92%E8%89%B2%E5%92%8C%E8%A7%92%E8%89%B2%E4%B9%8B%E9%97%B4%E9%9C%80%E8%A6%81%E9%81%B5%E5%AE%88%E5%93%AA%E4%BA%9B%E8%A7%84%E8%8C%83%EF%BC%8C%E5%93%AA%E4%BA%9B%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.0.2.</span> <span class="toc-text">角色和角色之间需要遵守哪些规范，哪些协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9FServlet%E6%9C%AC%E8%B4%A8"><span class="toc-number">4.</span> <span class="toc-text">模拟Servlet本质</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#SUN"><span class="toc-number">4.0.0.1.</span> <span class="toc-text">SUN</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#webapp"><span class="toc-number">4.0.0.2.</span> <span class="toc-text">webapp</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tomcat"><span class="toc-number">4.0.0.3.</span> <span class="toc-text">Tomcat</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-%E6%9A%82%E6%97%B6%E7%94%A8properties"><span class="toc-number">4.0.0.4.</span> <span class="toc-text">配置文件(暂时用properties)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Servlet%E8%A7%84%E8%8C%83%E6%98%AF%E4%B8%80%E4%B8%AA%E4%BB%80%E4%B9%88%E8%A7%84%E8%8C%83"><span class="toc-number">5.</span> <span class="toc-text">Servlet规范是一个什么规范?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E5%B8%A6%E6%9C%89Servlet%E7%9A%84webapp-%E9%87%8D%E7%82%B9"><span class="toc-number">5.1.</span> <span class="toc-text">开发一个带有Servlet的webapp(重点)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84"><span class="toc-number">5.1.0.1.</span> <span class="toc-text">开发步骤是怎样的?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%EF%BC%8C%E5%88%B0%E6%9C%80%E7%BB%88%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%B0%83%E7%94%A8Servlet%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%8C%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E8%BF%87%E7%A8%8B"><span class="toc-number">5.1.0.2.</span> <span class="toc-text">浏览器发送请求，到最终服务器调用Servlet中的方法，是怎样的一个过程?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EJavaEE%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">5.1.0.3.</span> <span class="toc-text">关于JavaEE的版本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%A8DOs%E5%91%BD%E4%BB%A4%E7%AA%97%E5%8F%A3%E4%B8%AD%E7%9A%84%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98%EF%BC%88%E6%8E%A7%E5%88%B6%E5%8F%B0%E4%B9%B1%E7%A0%81"><span class="toc-number">5.1.0.4.</span> <span class="toc-text">解决Tomcat服务器在DOs命令窗口中的乱码问题（控制台乱码)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%91%E6%B5%8F%E8%A7%88%E5%99%A8%E5%93%8D%E5%BA%94%E4%B8%80%E6%AE%B5HTML%E4%BB%A3%E7%A0%81"><span class="toc-number">5.1.0.5.</span> <span class="toc-text">向浏览器响应一段HTML代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9C%A8Servlet%E4%B8%AD%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E6%80%8E%E4%B9%88%E5%81%9A"><span class="toc-number">5.1.0.6.</span> <span class="toc-text">在Servlet中连接数据库，怎么做?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9C%A8%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%BD%93%E4%B8%AD%E5%BC%80%E5%8F%91Servlet%E7%A8%8B%E5%BA%8F"><span class="toc-number">5.1.0.7.</span> <span class="toc-text">在集成开发环境当中开发Servlet程序</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/MySQL-3/" title="MySQL(3)"><img src="https://w.wallhaven.cc/full/ex/wallhaven-exo2gr.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL(3)"/></a><div class="content"><a class="title" href="/2022/10/26/MySQL-3/" title="MySQL(3)">MySQL(3)</a><time datetime="2022-10-26T02:08:30.000Z" title="发表于 2022-10-26 10:08:30">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/MySQL-2/" title="MySQL(2)"><img src="https://w.wallhaven.cc/full/9d/wallhaven-9d59xx.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL(2)"/></a><div class="content"><a class="title" href="/2022/10/26/MySQL-2/" title="MySQL(2)">MySQL(2)</a><time datetime="2022-10-26T02:08:16.000Z" title="发表于 2022-10-26 10:08:16">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/MySQL-1/" title="MySQL(1)"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8qjwp.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL(1)"/></a><div class="content"><a class="title" href="/2022/10/26/MySQL-1/" title="MySQL(1)">MySQL(1)</a><time datetime="2022-10-26T02:08:05.000Z" title="发表于 2022-10-26 10:08:05">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/JDBC/" title="JDBC"><img src="https://w.wallhaven.cc/full/kx/wallhaven-kx9d56.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JDBC"/></a><div class="content"><a class="title" href="/2022/10/26/JDBC/" title="JDBC">JDBC</a><time datetime="2022-10-26T02:07:38.000Z" title="发表于 2022-10-26 10:07:38">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/juc-1/" title="juc(1)"><img src="https://w.wallhaven.cc/full/9d/wallhaven-9d5gpw.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="juc(1)"/></a><div class="content"><a class="title" href="/2022/10/26/juc-1/" title="juc(1)">juc(1)</a><time datetime="2022-10-26T02:06:04.000Z" title="发表于 2022-10-26 10:06:04">2022-10-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Barry</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2022/10/26/JAVAWEB-1/'
+    this.page.identifier = '/2022/10/26/JAVAWEB-1/'
+    this.page.title = 'JAVAWEB(1)'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+
+  document.getElementById('darkmode').addEventListener('click', () => {
+    setTimeout(() => window.disqusReset(), 200)
+  })
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><div class="aplayer no-destroy" data-id="60198" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

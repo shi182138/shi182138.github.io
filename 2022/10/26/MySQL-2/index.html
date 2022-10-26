@@ -1,0 +1,698 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>MySQL(2) | Barry</title><meta name="keywords" content="MySQL"><meta name="author" content="Barry"><meta name="copyright" content="Barry"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL(2)">
+<meta property="og:url" content="http://example.com/2022/10/26/MySQL-2/index.html">
+<meta property="og:site_name" content="Barry">
+<meta property="og:description" content="数据库">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/9d/wallhaven-9d59xx.png">
+<meta property="article:published_time" content="2022-10-26T02:08:16.000Z">
+<meta property="article:modified_time" content="2022-10-26T02:39:38.461Z">
+<meta property="article:author" content="Barry">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/9d/wallhaven-9d59xx.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/10/26/MySQL-2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MySQL(2)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-26 10:39:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/myfile/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/myfile/test.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/9d/wallhaven-9d59xx.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Barry</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/myfile/test.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MySQL(2)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-26T02:08:16.000Z" title="发表于 2022-10-26 10:08:16">2022-10-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-26T02:39:38.461Z" title="更新于 2022-10-26 10:39:38">2022-10-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MySQL(2)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="1、关于查询结果集的去重"><a href="#1、关于查询结果集的去重" class="headerlink" title="1、关于查询结果集的去重"></a>1、关于查询结果集的去重</h2><p>mysql&gt; select distinct job from emp; &#x2F;&#x2F; distinct关键字去除重复记录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-----------+</span><br><span class="line">| job       |</span><br><span class="line">+-----------+</span><br><span class="line">| CLERK     |</span><br><span class="line">| SALESMAN  |</span><br><span class="line">| MANAGER   |</span><br><span class="line">| ANALYST   |</span><br><span class="line">| PRESIDENT |</span><br><span class="line">+-----------+</span><br></pre></td></tr></table></figure>
+
+<p>mysql&gt; select ename ,distinct job from emp ;</p>
+<p>以上的sql语句是错误的。</p>
+<p>记住:distinct只能出现在所有字段的最前面。</p>
+<p>mysql&gt; select distinct deptno,job from emp;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+--------+-----------+</span><br><span class="line">| deptno | job       |</span><br><span class="line">+--------+-----------+</span><br><span class="line">|     20 | CLERK     |</span><br><span class="line">|     30 | SALESMAN  |</span><br><span class="line">|     20 | MANAGER   |</span><br><span class="line">|     30 | MANAGER   |</span><br><span class="line">|     10 | MANAGER   |</span><br><span class="line">|     20 | ANALYST   |</span><br><span class="line">|     10 | PRESIDENT |</span><br><span class="line">|     30 | CLERK     |</span><br><span class="line">|     10 | CLERK     |</span><br><span class="line">+--------+-----------+</span><br></pre></td></tr></table></figure>
+
+<h5 id="案例-统计岗位的数量"><a href="#案例-统计岗位的数量" class="headerlink" title="案例:统计岗位的数量?"></a>案例:统计岗位的数量?</h5><p>select count(distinct job)from emp ;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+---------------------+</span><br><span class="line">| count(distinct job) |</span><br><span class="line">+---------------------+</span><br><span class="line">|                   5 |</span><br><span class="line">+---------------------+</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、连接查询"><a href="#2、连接查询" class="headerlink" title="2、连接查询"></a>2、连接查询</h2><h3 id="2-1、什么是连接查询"><a href="#2-1、什么是连接查询" class="headerlink" title="2.1、什么是连接查询"></a>2.1、什么是连接查询</h3><p>2.1、什么是连接查询?<br>在实际开发中，大部分的情况下都不是从单表中查询数据，一般都是多张表联合查询取出最终的结果。在实际开发中，一般一个业务都会对应多张表，比如:学生和班级，起码两张表。</p>
+<p>stuno		stuname		classno		classname</p>
+<hr>
+<p>1					zs					1				北京大兴区亦庄经济技术开发区第二中学高三1班</p>
+<p>2					1s					1				北京大兴区亦庄经济技术开发区第二中学高三1班</p>
+<p>…………..</p>
+<p>学生和班级信息存储到一张表中，结果就像上面一样，数据会存在大量的重复，导致数据的冗余。</p>
+<h3 id="2-2、连接查询的分类"><a href="#2-2、连接查询的分类" class="headerlink" title="2.2、连接查询的分类?"></a>2.2、连接查询的分类?</h3><p>根据语法出现的年代来划分的话,包括:<br>    SQL.92	(一些老的DBA可能还在使用这种语法。DBA: DataBase administrator，数据库管理员)<br>    sQL99 (比较新的语法)</p>
+<p>- </p>
+<ul>
+<li>根据表的连接方式来划分,包括:</li>
+<li>内连接:<ul>
+<li>等值连接</li>
+<li>非等值连接</li>
+<li>自连接</li>
+</ul>
+</li>
+<li>外连接</li>
+<li>全连接(这个不讲,很少用!)</li>
+</ul>
+<h3 id="2-3、在表的连接查询方面有一种现象被称为-笛卡尔积现象。（笛卡尔乘积现象"><a href="#2-3、在表的连接查询方面有一种现象被称为-笛卡尔积现象。（笛卡尔乘积现象" class="headerlink" title="2.3、在表的连接查询方面有一种现象被称为:笛卡尔积现象。（笛卡尔乘积现象)"></a>2.3、在表的连接查询方面有一种现象被称为:笛卡尔积现象。（笛卡尔乘积现象)</h3><p>案例:找出每一个员工的部门名称,要求显示员工名和部门名。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">emp</span><br><span class="line">mysql&gt; select ename,deptno from emp;</span><br><span class="line">+--------+--------+</span><br><span class="line">| ename  | deptno |</span><br><span class="line">+--------+--------+</span><br><span class="line">| SMITH  |     20 |</span><br><span class="line">| ALLEN  |     30 |</span><br><span class="line">| WARD   |     30 |</span><br><span class="line">| JONES  |     20 |</span><br><span class="line">| MARTIN |     30 |</span><br><span class="line">| BLAKE  |     30 |</span><br><span class="line">| CLARK  |     10 |</span><br><span class="line">| SCOTT  |     20 |</span><br><span class="line">| KING   |     10 |</span><br><span class="line">| TURNER |     30 |</span><br><span class="line">| ADAMS  |     20 |</span><br><span class="line">| JAMES  |     30 |</span><br><span class="line">| FORD   |     20 |</span><br><span class="line">| MILLER |     10 |</span><br><span class="line">+--------+--------+</span><br><span class="line"></span><br><span class="line">mysql&gt; select deptno,dname,loc from dept;</span><br><span class="line">+--------+------------+----------+</span><br><span class="line">| deptno | dname      | loc      |</span><br><span class="line">+--------+------------+----------+</span><br><span class="line">|     10 | ACCOUNTING | NEW YORK |</span><br><span class="line">|     20 | RESEARCH   | DALLAS   |</span><br><span class="line">|     30 | SALES      | CHICAGO  |</span><br><span class="line">|     40 | OPERATIONS | BOSTON   |</span><br><span class="line">+--------+------------+----------+</span><br><span class="line"></span><br><span class="line">mysql&gt; select ename , dname from emp , dept;</span><br><span class="line">+--------+------------+</span><br><span class="line">| ename  | dname      |</span><br><span class="line">+--------+------------+</span><br><span class="line">| SMITH  | OPERATIONS |</span><br><span class="line">| SMITH  | SALES      |</span><br><span class="line">| SMITH  | RESEARCH   |</span><br><span class="line">| SMITH  | ACCOUNTING |</span><br><span class="line">| ALLEN  | OPERATIONS |</span><br><span class="line">| ALLEN  | SALES      |</span><br><span class="line">| ALLEN  | RESEARCH   |</span><br><span class="line">| ALLEN  | ACCOUNTING |</span><br><span class="line">| WARD   | OPERATIONS |</span><br><span class="line">| WARD   | SALES      |</span><br><span class="line">| WARD   | RESEARCH   |</span><br><span class="line">| WARD   | ACCOUNTING |</span><br><span class="line">| JONES  | OPERATIONS |</span><br><span class="line">| JONES  | SALES      |</span><br><span class="line">| JONES  | RESEARCH   |</span><br><span class="line">| JONES  | ACCOUNTING |</span><br><span class="line">| MARTIN | OPERATIONS |</span><br><span class="line">| MARTIN | SALES      |</span><br><span class="line">| MARTIN | RESEARCH   |</span><br><span class="line">| MARTIN | ACCOUNTING |</span><br><span class="line">| BLAKE  | OPERATIONS |</span><br><span class="line">| BLAKE  | SALES      |</span><br><span class="line">| BLAKE  | RESEARCH   |</span><br><span class="line">| BLAKE  | ACCOUNTING |</span><br><span class="line">...............</span><br><span class="line">56 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p><strong>笛卡尔积现象:当两张表进行连接查询的时候，没有任何条件进行限制,</strong><br><strong>最终的查询结果条数是两张表记录条数的乘积。</strong></p>
+<p>ename和dname要联合起来一块显示，粘到一块。</p>
+<h4 id="关于表的别名"><a href="#关于表的别名" class="headerlink" title="关于表的别名:"></a>关于表的别名:</h4><p>select e.ename ,d.dname from emp e ,dept d;表的别名有什么好处?</p>
+<ul>
+<li>第一:执行效率高。</li>
+<li>第二:可读性好。</li>
+</ul>
+<h3 id="2-4、怎么避免笛卡尔积现象-当然是加条件进行过滤。"><a href="#2-4、怎么避免笛卡尔积现象-当然是加条件进行过滤。" class="headerlink" title="2.4、怎么避免笛卡尔积现象?当然是加条件进行过滤。"></a>2.4、怎么避免笛卡尔积现象?当然是加条件进行过滤。</h3><p>思考:避免了笛卡尔积现象,会减少记录的匹配次数吗?<br>不会,次数还是56次。只不过显示的是有效记录。</p>
+<p>案例:找出每一个员工的部门名称,要求显示员工名和部门名。<br>select</p>
+<p>​	e.ename ,d. dname</p>
+<p>from</p>
+<p>​	emp e , dept d</p>
+<p>where<br>    e.deptno &#x3D; d.deptno;  <strong>&#x2F;&#x2F;SQL92以后不用</strong></p>
+<h3 id="2-5、内连接之等值连接-最大特点是-条件是等量关系。"><a href="#2-5、内连接之等值连接-最大特点是-条件是等量关系。" class="headerlink" title="2.5、内连接之等值连接:最大特点是:条件是等量关系。"></a>2.5、内连接之等值连接:最大特点是:条件是等量关系。</h3><p>案例:查询每个员工的部门名称,要求显示员工名和部门名。</p>
+<p>SQL92:(太老，不用了)<br>select e.ename ,d.dname from emp e, dept d where e.deptno &#x3D; d.deptno;</p>
+<p>SQL99:(常用的)</p>
+<p>select</p>
+<p>​	e.ename ,d.dname</p>
+<p>from</p>
+<p>​	emp e</p>
+<p>join<br>    dept d<br>on<br>    e.deptno &#x3D; d.deptno;</p>
+<p><strong>SQL99语法结构更清晰一些:表的连接条件和后来的where条件分离了。</strong></p>
+<h3 id="2-6、内连接之非等值连接-最大的特点是-连接条件中的关系是非等量关系。"><a href="#2-6、内连接之非等值连接-最大的特点是-连接条件中的关系是非等量关系。" class="headerlink" title="2.6、内连接之非等值连接:最大的特点是:连接条件中的关系是非等量关系。"></a>2.6、内连接之非等值连接:最大的特点是:连接条件中的关系是非等量关系。</h3><p><strong>inner可以省略</strong></p>
+<p>案例:找出每个员工的工资等级，要求显示员工名、工资、工资等级。<br>mysql&gt; select ename , sal from emp ;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+--------+---------+</span><br><span class="line">| ename  | sal     |</span><br><span class="line">+--------+---------+</span><br><span class="line">| SMITH  |  800.00 |</span><br><span class="line">| ALLEN  | 1600.00 |</span><br><span class="line">| WARD   | 1250.00 |</span><br><span class="line">| JONES  | 2975.00 |</span><br><span class="line">| MARTIN | 1250.00 |</span><br><span class="line">| BLAKE  | 2850.00 |</span><br><span class="line">| CLARK  | 2450.00 |</span><br><span class="line">| SCOTT  | 3000.00 |</span><br><span class="line">| KING   | 5000.00 |</span><br><span class="line">| TURNER | 1500.00 |</span><br><span class="line">| ADAMS  | 1100.00 |</span><br><span class="line">| JAMES  |  950.00 |</span><br><span class="line">| FORD   | 3000.00 |</span><br><span class="line">| MILLER | 1300.00 |</span><br><span class="line">+--------+---------+</span><br></pre></td></tr></table></figure>
+
+<p>mysql&gt; select * from salgrade;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-------+-------+-------+</span><br><span class="line">| GRADE | LOSAL | HISAL |</span><br><span class="line">+-------+-------+-------+</span><br><span class="line">|     1 |   700 |  1200 |</span><br><span class="line">|     2 |  1201 |  1400 |</span><br><span class="line">|     3 |  1401 |  2000 |</span><br><span class="line">|     4 |  2001 |  3000 |</span><br><span class="line">|     5 |  3001 |  9999 |</span><br><span class="line">+-------+-------+-------+</span><br></pre></td></tr></table></figure>
+
+<p>select e.ename, e.sal, s.grade from emp e join salgrade s on e.sal between s.losal and s.hisal;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+--------+---------+-------+</span><br><span class="line">| ename  | sal     | grade |</span><br><span class="line">+--------+---------+-------+</span><br><span class="line">| SMITH  |  800.00 |     1 |</span><br><span class="line">| ALLEN  | 1600.00 |     3 |</span><br><span class="line">| WARD   | 1250.00 |     2 |</span><br><span class="line">| JONES  | 2975.00 |     4 |</span><br><span class="line">| MARTIN | 1250.00 |     2 |</span><br><span class="line">| BLAKE  | 2850.00 |     4 |</span><br><span class="line">| CLARK  | 2450.00 |     4 |</span><br><span class="line">| SCOTT  | 3000.00 |     4 |</span><br><span class="line">| KING   | 5000.00 |     5 |</span><br><span class="line">| TURNER | 1500.00 |     3 |</span><br><span class="line">| ADAMS  | 1100.00 |     1 |</span><br><span class="line">| JAMES  |  950.00 |     1 |</span><br><span class="line">| FORD   | 3000.00 |     4 |</span><br><span class="line">| MILLER | 1300.00 |     2 |</span><br><span class="line">+--------+---------+-------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-7、自连接-最大的特点是-一张表看做两张表。自己连接自己。"><a href="#2-7、自连接-最大的特点是-一张表看做两张表。自己连接自己。" class="headerlink" title="2.7、自连接:最大的特点是:一张表看做两张表。自己连接自己。"></a>2.7、自连接:最大的特点是:一张表看做两张表。自己连接自己。</h3><p>案例:找出每个员工的上级领导，要求显示员工名和对应的领导名。</p>
+<p>mysql&gt; select empno , ename ,mgr from emp ;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+-------+--------+------+</span><br><span class="line">| empno | ename  | mgr  |</span><br><span class="line">+-------+--------+------+</span><br><span class="line">|  7369 | SMITH  | 7902 |</span><br><span class="line">|  7499 | ALLEN  | 7698 |</span><br><span class="line">|  7521 | WARD   | 7698 |</span><br><span class="line">|  7566 | JONES  | 7839 |</span><br><span class="line">|  7654 | MARTIN | 7698 |</span><br><span class="line">|  7698 | BLAKE  | 7839 |</span><br><span class="line">|  7782 | CLARK  | 7839 |</span><br><span class="line">|  7788 | SCOTT  | 7566 |</span><br><span class="line">|  7839 | KING   | NULL |</span><br><span class="line">|  7844 | TURNER | 7698 |</span><br><span class="line">|  7876 | ADAMS  | 7788 |</span><br><span class="line">|  7900 | JAMES  | 7698 |</span><br><span class="line">|  7902 | FORD   | 7566 |</span><br><span class="line">|  7934 | MILLER | 7782 |</span><br><span class="line">+-------+--------+------+</span><br></pre></td></tr></table></figure>
+
+<p>员工的领导编号&#x3D;领导的员工编号<br>select a.ename as’员工名’ ,b.ename as ‘领导名’ from emp a inner join emp b on a.mgr &#x3D; b.empno;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+--------+--------+</span><br><span class="line">| 员工名 | 领导名 |</span><br><span class="line">+--------+--------+</span><br><span class="line">| SMITH  | FORD   |</span><br><span class="line">| ALLEN  | BLAKE  |</span><br><span class="line">| WARD   | BLAKE  |</span><br><span class="line">| JONES  | KING   |</span><br><span class="line">| MARTIN | BLAKE  |</span><br><span class="line">| BLAKE  | KING   |</span><br><span class="line">| CLARK  | KING   |</span><br><span class="line">| SCOTT  | JONES  |</span><br><span class="line">| TURNER | BLAKE  |</span><br><span class="line">| ADAMS  | SCOTT  |</span><br><span class="line">| JAMES  | BLAKE  |</span><br><span class="line">| FORD   | JONES  |</span><br><span class="line">| MILLER | CLARK  |</span><br><span class="line">+--------+--------+</span><br><span class="line">13 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-8、外连接"><a href="#2-8、外连接" class="headerlink" title="2.8、外连接?"></a>2.8、外连接?</h3><ul>
+<li>什么是外连接,和内连接有什么区别?<ul>
+<li>内连接:<ul>
+<li>假设A和s表进行连接，使用内连接的话，凡是a表和s表能够匹配上的记录查询出来，这就是内连接。AB两张表没有主副之分,两张表是平等的。</li>
+</ul>
+</li>
+<li>外连接:<ul>
+<li>假设A和B表进行连接，使用外连接的话，aB两张表中有一张表是主表，一张表是副表，主要查询主表中的数据，捎带着查询副表，当副表中的数据没有和主表中的数据匹配上，副表自动模拟出N与之匹配。</li>
+</ul>
+</li>
+<li>外连接的分类?<ul>
+<li>左外连接(左连接):表示左边的这张表是主表。</li>
+<li>右外连接(右连接) :表示右边的这张表是主表。</li>
+<li>左连接有右连接的写法，右连接也会有对应的左连接的写法。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>案例:找出每个员工的上级领导?</p>
+<p>外连接:</p>
+<p>select a.ename ‘员工’, b.ename ‘领导’ from emp a left join emp b on a.mgr&#x3D;b.empno;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">+--------+-------+</span><br><span class="line">| 员工   | 领导  |</span><br><span class="line">+--------+-------+</span><br><span class="line">| SMITH  | FORD  |</span><br><span class="line">| ALLEN  | BLAKE |</span><br><span class="line">| WARD   | BLAKE |</span><br><span class="line">| JONES  | KING  |</span><br><span class="line">| MARTIN | BLAKE |</span><br><span class="line">| BLAKE  | KING  |</span><br><span class="line">| CLARK  | KING  |</span><br><span class="line">| SCOTT  | JONES |</span><br><span class="line">| KING   | NULL  |</span><br><span class="line">| TURNER | BLAKE |</span><br><span class="line">| ADAMS  | SCOTT |</span><br><span class="line">| JAMES  | BLAKE |</span><br><span class="line">| FORD   | JONES |</span><br><span class="line">| MILLER | CLARK |</span><br><span class="line">+--------+-------+</span><br><span class="line"></span><br><span class="line">14 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p><strong>外连接最重要的特点是:主表的数据无条件的全部查询出来。</strong></p>
+<h3 id="2-9、三张表怎么连接查询"><a href="#2-9、三张表怎么连接查询" class="headerlink" title="2.9、三张表怎么连接查询?"></a>2.9、三张表怎么连接查询?</h3><p>案例:找出每一个员工的部门名称以及工资等级。</p>
+<p>案例:找出每一个员工的部门名称、工资等级、以及上级领导。</p>
+<p>select e.ename ‘员工’,d.dname ,s.grade ,e1.ename ‘领导’ from emp e join dept d on e.deptno &#x3D; d.deptnojoin salgrade s on e.sal between s.1osal and s.hisalleft join emp e1on e.mgr &#x3D; e1.empno ;</p>
+<h2 id="3、子查询"><a href="#3、子查询" class="headerlink" title="3、子查询"></a>3、子查询</h2><h3 id="3-1、什么是子查询"><a href="#3-1、什么是子查询" class="headerlink" title="3.1、什么是子查询"></a>3.1、什么是子查询</h3><p>select语句当中嵌套select语句，被嵌套的select语句是子查询。子查询可以出现在哪里?<br>select</p>
+<p>​	..(select) </p>
+<p>from</p>
+<p>​	..(select) </p>
+<p>where</p>
+<p>​	..(select) .</p>
+<h3 id="3-2、where子语句中使用子查询"><a href="#3-2、where子语句中使用子查询" class="headerlink" title="3.2、where子语句中使用子查询"></a>3.2、where子语句中使用子查询</h3><p>案例:找出高于平均薪资的员工信息。</p>
+<p>select * from emp where sal &gt; avg(sal);	&#x2F;&#x2F;错误的写法，where后面不能直接使用分组函数。</p>
+<p>第一步:找出平均薪资<br>select avg (sal)from emp ;</p>
+<p>第二步</p>
+<p>select avg (sal) from emp</p>
+<p>第一步和第二步合并:<br>select * from emp where sal &gt;(select avg (sal) from emp) ;</p>
+<h3 id="3-3、from后面嵌套子查询"><a href="#3-3、from后面嵌套子查询" class="headerlink" title="3.3、from后面嵌套子查询"></a>3.3、from后面嵌套子查询</h3><p>案例:找出每个部门平均薪水的薪资等级。<br>第一步:找出每个部门平均薪水（按照部门编号分组，求sal的平均值)</p>
+<p>select deptno ,avg (sal) as avgsal from emp group by deptno;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+--------+-------------+</span><br><span class="line">| deptno | avgsal      |</span><br><span class="line">+--------+-------------+</span><br><span class="line">|     20 | 2175.000000 |</span><br><span class="line">|     30 | 1566.666667 |</span><br><span class="line">|     10 | 2916.666667 |</span><br><span class="line">+--------+-------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>第二步:将以上的查询结果当做临时表t，让t表和salgrade s表连接，条件是: t.avgsal between s.losal and s.hisal</p>
+<p>select t.* ,s.grade from (select deptno ,avg(sal) as avgsal from emp group by deptno) t join salgrade s on t.avgsal between s.losal and s.hisal;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+--------+-------------+-------+</span><br><span class="line">| deptno | avgsal      | grade |</span><br><span class="line">+--------+-------------+-------+</span><br><span class="line">|     20 | 2175.000000 |     4 |</span><br><span class="line">|     30 | 1566.666667 |     3 |</span><br><span class="line">|     10 | 2916.666667 |     4 |</span><br><span class="line">+--------+-------------+-------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>案例:找出每个部门平均的薪水等级。</p>
+<p>第一步:找出每个员工的薪水等级。<br>select e.ename ,e.sal,e.deptno ,s.grade from emp e join salgrade s on e.sal between s.losal and s.hisal;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+--------+---------+--------+-------+</span><br><span class="line">| ename  | sal     | deptno | grade |</span><br><span class="line">+--------+---------+--------+-------+</span><br><span class="line">| SMITH  |  800.00 |     20 |     1 |</span><br><span class="line">| ALLEN  | 1600.00 |     30 |     3 |</span><br><span class="line">| WARD   | 1250.00 |     30 |     2 |</span><br><span class="line">| JONES  | 2975.00 |     20 |     4 |</span><br><span class="line">| MARTIN | 1250.00 |     30 |     2 |</span><br><span class="line">| BLAKE  | 2850.00 |     30 |     4 |</span><br><span class="line">| CLARK  | 2450.00 |     10 |     4 |</span><br><span class="line">| SCOTT  | 3000.00 |     20 |     4 |</span><br><span class="line">| KING   | 5000.00 |     10 |     5 |</span><br><span class="line">| TURNER | 1500.00 |     30 |     3 |</span><br><span class="line">| ADAMS  | 1100.00 |     20 |     1 |</span><br><span class="line">| JAMES  |  950.00 |     30 |     1 |</span><br><span class="line">| FORD   | 3000.00 |     20 |     4 |</span><br><span class="line">| MILLER | 1300.00 |     10 |     2 |</span><br><span class="line">+--------+---------+--------+-------+</span><br></pre></td></tr></table></figure>
+
+<p>第二步:基于以上结果，继续按照deptno分组，求grade平均值。<br>select e.deptno ,avg(s.grade) from emp e join salgrade s on e.sal between s.losal and s.hisal group by e.deptno ;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+--------+--------------+</span><br><span class="line">| deptno | avg(s.grade) |</span><br><span class="line">+--------+--------------+</span><br><span class="line">|     20 |       2.8000 |</span><br><span class="line">|     30 |       2.5000 |</span><br><span class="line">|     10 |       3.6667 |</span><br><span class="line">+--------+--------------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4、在select后面嵌套子查询。"><a href="#3-4、在select后面嵌套子查询。" class="headerlink" title="3.4、在select后面嵌套子查询。"></a>3.4、在select后面嵌套子查询。</h3><p>案例:找出每个员工所在的部门名称，要求显示员工名和部门名。</p>
+<p>select d.dname from dept d where e.deptno &#x3D; d.deptno</p>
+<p>select e.ename,(select d.dname from dept d where e.deptno &#x3D; d.deptno) as dname from emp e</p>
+<h2 id="4、union-可以将查询结果集相加"><a href="#4、union-可以将查询结果集相加" class="headerlink" title="4、union (可以将查询结果集相加)"></a>4、union (可以将查询结果集相加)</h2><p>案例:找出工作岗位是SALESMAN和MANAGER的员工?</p>
+<p>第一种: select ename ,job from emp where job &#x3D; ‘MANAGER’ or job &#x3D; ‘SALESMAN’</p>
+<p>第二种: select ename,job from emp where job in ( ‘MANAGER’，’SALESMAN</p>
+<p>第三种: union<br>select ename ,job from emp where job &#x3D; ‘MANAGER ‘ union select ename ,job from emp where job &#x3D; ‘SAL,ESMAN’ ;</p>
+<p>两张不相千的表中的数据拼接在一起显示?</p>
+<p>select ename from emp union select dname rom dept;</p>
+<h2 id="5、limit〈重点中的重点-以后分页查询全靠它了。"><a href="#5、limit〈重点中的重点-以后分页查询全靠它了。" class="headerlink" title="5、limit〈重点中的重点,以后分页查询全靠它了。)"></a>5、limit〈重点中的重点,以后分页查询全靠它了。)</h2><h3 id="5-1、1imit是mysq1特有的，其他数据库中没有，不通用。-oracle中有一个相同的机制，叫做rownum"><a href="#5-1、1imit是mysq1特有的，其他数据库中没有，不通用。-oracle中有一个相同的机制，叫做rownum" class="headerlink" title="5.1、1imit是mysq1特有的，其他数据库中没有，不通用。(oracle中有一个相同的机制，叫做rownum)"></a>5.1、1imit是mysq1特有的，其他数据库中没有，不通用。(oracle中有一个相同的机制，叫做rownum)</h3><h3 id="5-2、limit取结果集中的部分数据-这时它的作用。"><a href="#5-2、limit取结果集中的部分数据-这时它的作用。" class="headerlink" title="5.2、limit取结果集中的部分数据,这时它的作用。"></a>5.2、limit取结果集中的部分数据,这时它的作用。</h3><h3 id="5-3、语法机制"><a href="#5-3、语法机制" class="headerlink" title="5.3、语法机制:"></a>5.3、语法机制:</h3><p>​	limit startIndex, length<br>​	</p>
+<p>startIndex表示起始位置 从0开始,0表示第一条数据。</p>
+<p>length表示取几个</p>
+<h3 id="5-4、limit是sql语句最后执行的一个环节"><a href="#5-4、limit是sql语句最后执行的一个环节" class="headerlink" title="5.4、limit是sql语句最后执行的一个环节:"></a>5.4、limit是sql语句最后执行的一个环节:</h3><p>select		5</p>
+<p>from		1</p>
+<p>where		2</p>
+<p>group by 	3</p>
+<p>having		4</p>
+<p>order by		6</p>
+<p>limit				7<br>…;</p>
+<h3 id="5-5、案例-找出工资排名在第4到第9名的员工"><a href="#5-5、案例-找出工资排名在第4到第9名的员工" class="headerlink" title="5.5、案例:找出工资排名在第4到第9名的员工?"></a>5.5、案例:找出工资排名在第4到第9名的员工?</h3><p>select ename ,sal from emp order by sal desc limit 3,6;</p>
+<h3 id="5-6、通用的标准分页sql"><a href="#5-6、通用的标准分页sql" class="headerlink" title="5.6、通用的标准分页sql ?"></a>5.6、通用的标准分页sql ?</h3><p>每页显示3条记录:</p>
+<p>第1页:0,3</p>
+<p>第2页:3,3</p>
+<p>第3页:6,3</p>
+<p>第4页:9,3</p>
+<p>第5页:12,3</p>
+<p>每页显示pagesize条记录:<br>第pageNo页: (pageNo - 1) * pagesize, pagesize</p>
+<p>pagesize是什么?是每页显示多少条记录</p>
+<p>pageNo是什么?显示第几页</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java代码&#123;</span><br><span class="line"><span class="type">int</span> <span class="variable">pageNo</span> <span class="operator">=</span> <span class="number">2</span>; <span class="comment">//页码是2</span></span><br><span class="line"><span class="type">int</span> <span class="variable">pagesize</span> <span class="operator">=</span> <span class="number">10</span>; <span class="comment">//每页显示10条</span></span><br><span class="line">limit (pageNo - <span class="number">1</span>)*pagesize, pagesize</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="6、创建表"><a href="#6、创建表" class="headerlink" title="6、创建表:"></a>6、创建表:</h2><p>建表语句的语法格式:<br>    create table表名(</p>
+<p>​		字段名1数据类型，</p>
+<p>​		字段名2数据类型，</p>
+<p>​		字段名3数据类型，<br>​	);</p>
+<p>关于MysQL当中字段的数据类型?以下只说常见的<br>int		整数型(java中的int)<br>bigint		长整型(java中的long)<br>float		浮点型(java中的float double)char定长字符串(string)<br>varchar		可变长字符串(stringBuffer&#x2F;stringBuilder)</p>
+<p>date			日期类型(对应Java中的java.sql.Date类型)<br>BLOB			二进制大对象（存储图片、视频等流媒体信息) Binary Large 0Bject(对应java中的object)<br>CLOB			字符大对象（存储较大文本，比如，可以存储4c的字符串。) </p>
+<p>Character Large OBject(对应java中的object)</p>
+<p>char和varchar怎么选择?<br>在实际的开发中，当某个字段中的数据长度不发生改变的时候，是定长的，例如:性别、生日等都是采用char。</p>
+<p>当一个字段的数据长度不确定，例如:简介、姓名等都是米用varchar.<br>BLOB和CLOB类型的使用?<br>电影表:t movie<br>id(int)		name (varchar)		playtime (date&#x2F;char)		haibao (BLOB)		history (CLOB)</p>
+<p>1					蜘蛛侠<br>2</p>
+<p>表名在数据库当中一般建议以:t_或者tb1_开始。创建学生表:<br>学生信息包括:<br>学号、姓名、性别、班级编号、生日学号: bigint<br>姓名: varchar性别: char班级编号:int生日: char<br>create table t_student (<br>no bigint,<br>name varchar (255),</p>
+<p>sex char (1),<br>classno varchar(255),</p>
+<p>birth char (10)</p>
+<p>}</p>
+<h2 id="7、insert语句插入数据"><a href="#7、insert语句插入数据" class="headerlink" title="7、insert语句插入数据"></a>7、insert语句插入数据</h2><p>语法格式:<br>insert into表名(字段名1,字段名2,字段名3,… .) values(值1,值2,值3,….)</p>
+<p>要求:字段的数量和值的数量相同，并且数据类型要对应相同。</p>
+<p>insert into t student(no ,name , sex,classno,birth) values(1, ‘ zhangsan’ , ‘1 ‘ , ‘gaosan1ban’ );</p>
+<p>mysql&gt;insert into t student (no ,name , sex,classno ,birth) values(1, ‘ zhangsan’ ,’1’,’ gaosan1ban ‘);ERROR 1136 (21s01): column count doesn’t match value count at row 1</p>
+<p>insert into t_student (name) values ( ‘ wangwu ‘ );&#x2F;&#x2F;除name字段之外，<br>剩下的所有字段自动插入NULL。</p>
+<p>drop table if exists t_student; &#x2F;&#x2F;当这个表存在的话删除。</p>
+<p>create table t _student(<br>no bigint,<br>name varchar (255),sex char(1)default 1,classno varchar (255),birth char (10)<br>);</p>
+<p><strong>需要注意的地方:</strong><br><strong>当一条insert语句执行成功之后,表格当中必然会多一行记录。即使多的这一行记录当中某些字段是NULL，后期也没有办法在执行insert语句插入数据了，只能使用update进行更新。</strong></p>
+<h2 id="8、表的复制"><a href="#8、表的复制" class="headerlink" title="8、表的复制"></a>8、表的复制</h2><p>语法:<br>create table表名as select语句;将查询结果当做表创建出来。</p>
+<h2 id="9、将查询结果插入到一张表中"><a href="#9、将查询结果插入到一张表中" class="headerlink" title="9、将查询结果插入到一张表中?"></a>9、将查询结果插入到一张表中?</h2><p>mysql&gt; insert into dept1 select *from dept;mysql&gt; select *from dept1 ;</p>
+<h2 id="10、修改数据-update"><a href="#10、修改数据-update" class="headerlink" title="10、修改数据:update"></a>10、修改数据:update</h2><p>语法格式:<br>update 表名set字段名1&#x3D;值1,字段名2&#x3D;值2… where条件;注意:没有条件整张表数据全部更新。<br>案例:将部门10的Ioc修改为SHANGHAI，将部门名称修改为RENSHIBU<br>update dept1 set loc &#x3D; ‘SHANGEAT’,dname &#x3D;’RENSHIBU’ where deptno &#x3D; 10;mysql&gt; select *from dept1 ;</p>
+<h2 id="11、删除数据"><a href="#11、删除数据" class="headerlink" title="11、删除数据?"></a>11、删除数据?</h2><p>语法格式:<br>delete from表名where条件;<br>注意:没有条件全部删除。<br>删除10部门数据?<br>delete from dept1 where deptno &#x3D; 10;<br>删除所有记录?<br>delete from dept1;<br>怎么删除大表?(重点)<br>truncate table emp;&#x2F;&#x2F;表被截断，不可回滚。永久丢失。</p>
+<h2 id="12、"><a href="#12、" class="headerlink" title="12、"></a>12、</h2><p>对于表结构的修改，使用工具完成即可，因为在实际开发中表一旦设计好之后，对表结构的修改是很少的，修改表结构就是对之前的设计进行了否定，即使<br>需要修改表结构，我们也可以直接使用工具操作。修改表结构的语句不会出现在Java代码当中。出现在java代码当中的sql包括: insert delete update select(这些都是表中的数据操作。)<br>增删改查有一个术语:CRUD操作<br>create(增)Retrieve(检索)update（修改)Delete （删除)</p>
+<h2 id="13、约束-Constraint"><a href="#13、约束-Constraint" class="headerlink" title="13、约束(Constraint)"></a>13、约束(Constraint)</h2><p>13.1、什么是约束?</p>
+<p>常见的约束有哪些呢?</p>
+<p>表格<br>id	(唯一性约束)		password(非空约束)</p>
+<h3 id="13-1、什么是约束-常见的约束有哪些呢"><a href="#13-1、什么是约束-常见的约束有哪些呢" class="headerlink" title="13.1、什么是约束?常见的约束有哪些呢?"></a>13.1、什么是约束?常见的约束有哪些呢?</h3><p>在创建表的时候，可以给表的字段添加相应的约束，<strong>添加约束的目的是为了保证表中数据的合法性、有效性、完整性。</strong></p>
+<ul>
+<li>常见的约束有哪些呢?<ul>
+<li>非空约束(not null):约束的字段不能为NULL</li>
+<li>唯一约束(unique):约束的字段不能重复</li>
+<li>主键约束(primary key):约束的字段既不能为NULL，也不能重复（简称PR)</li>
+<li>外键约束(foreign key) : …(简称PK)</li>
+<li>检查约束(check):注意oracle数据库有check约束，但是mysql没有，目前mysq1不支持该约束。</li>
+</ul>
+</li>
+</ul>
+<p>13.2、非空约束not null<br>drop table if exists t user;</p>
+<p>create table t user(<br>id int,<br>username varchar (255) not null,</p>
+<p>password varchar(255)</p>
+<p>);</p>
+<p>insert into t user(id,password)values(1,’123’) ;</p>
+<h3 id="13-2、唯一性约束-unique"><a href="#13-2、唯一性约束-unique" class="headerlink" title="13.2、唯一性约束(unique)"></a>13.2、唯一性约束(unique)</h3><p><em>唯一约束修饰的字段具有唯一性,不能重复。但可以为NULL。</em>案例:给某一列添加unique<br>drop table if exists t _user;</p>
+<p>create table t user (<br>id int,<br>username varchar (255) unique &#x2F;&#x2F;列级约束) ;<br>insert into t _user values (1, izhangsan ‘ ) ;</p>
+<p>insert into t _user values(2 , ‘ zhangsan ‘) ;<br>ERROR 1062 (23000): Duplicate entry ‘zhangsan’ for key ‘use</p>
+<p>insert into t _user (id)values (2);</p>
+<p>insert into t_user (id) values (3);insert into t _user(id)values (4);</p>
+<p>案例:给两个列或者多个列添加unique<br>drop table if exists t _user;<br>create table t _user (<br>id int,<br>usercode varchar (255),username varchar (255),</p>
+<p>unique (usercode , username)&#x2F;&#x2F; 多个字段联合起来添加1个约束unique【表级约刺】);<br>insert into t_user values (1,’111’,’zs’) ;</p>
+<p>insert into t _user values (2,’111’, ‘ls ‘) ;</p>
+<p>insert into t user values (3 , ‘222’,’zs ‘) ;select * from t _user;<br>insert into t _user values (4,’111’, ‘zs’ );<br>ERROR 1062 (23000): Duplicate entry ‘111-zs’ for key ‘usercode ‘</p>
+<h3 id="13-3主键约束"><a href="#13-3主键约束" class="headerlink" title="13.3主键约束"></a>13.3主键约束</h3><p>怎么给一张表添加主键约束呢?			&#x2F;&#x2F;列级约束<br>drop table if exists t_user ;</p>
+<p>create table t_user (</p>
+<p>id int primary key, 								</p>
+<p>username varchar (255),</p>
+<p>email varchar (255)<br>) ;<br>insert into t_user(id,username,email) values(1, ‘zs’,’ <a href="mailto:&#122;&#x73;&#64;&#49;&#50;&#51;&#x2e;&#x63;&#x6f;&#109;">&#122;&#x73;&#64;&#49;&#50;&#51;&#x2e;&#x63;&#x6f;&#109;</a>‘ ) ;</p>
+<p>insert into t_user(id,username , email) values(2,’1s’,‘<a href="mailto:&#x31;&#x73;&#64;&#x31;&#50;&#x33;&#x2e;&#99;&#111;&#x6d;">&#x31;&#x73;&#64;&#x31;&#50;&#x33;&#x2e;&#99;&#111;&#x6d;</a> ‘ ) ;</p>
+<p>insert into t_user(id,username , email) values(3 , ‘ww’ ,’ <a href="mailto:&#x77;&#119;&#x40;&#x31;&#50;&#x33;&#x2e;&#99;&#x6f;&#x6d;">&#x77;&#119;&#x40;&#x31;&#50;&#x33;&#x2e;&#99;&#x6f;&#x6d;</a>‘ ) ;</p>
+<p>select *from t_user;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+----+----------+-------------+</span><br><span class="line">| id | username | email       |</span><br><span class="line">+----+----------+-------------+</span><br><span class="line">|  1 | zs       |  zs@123.com |</span><br><span class="line">|  2 | 1s       | 1s@123.com  |</span><br><span class="line">|  3 | ww       |  ww@123.com |</span><br><span class="line">+----+----------+-------------+</span><br></pre></td></tr></table></figure>
+
+<p>insert into t_user(id,username , email) values(1, ‘jack ‘ , ‘<a href="mailto:&#106;&#97;&#99;&#107;&#x40;&#49;&#x32;&#x33;&#x2e;&#99;&#x6f;&#109;">&#106;&#97;&#99;&#107;&#x40;&#49;&#x32;&#x33;&#x2e;&#99;&#x6f;&#109;</a>‘ ) ;</p>
+<p>ERROR 1062 (23000): Duplicate entry ‘1’ for key ‘t_user.PRIMARY’</p>
+<p><strong>根据以上的测试得出: id是主键，因为添加了主键约束，主键字段中的数据不能为NUL，也不能重复。主键的特点:不能为NULL，也不能重复。</strong><br>*主键相关的术语?<br>主健约束: primary key<br>主键字段: id字段添加primary key之后,id叫做主键字段主键值: id字段中的每一个值都是主键值。<br>主键有什么作用?</p>
+<p>-<strong>表的设计三范式中有要求，第一范式就要求任何一张表都应该有主键。</strong><br>-主键的作用:<strong>主键值是这行记录在这张表当中的唯一标识</strong>。(就像一个人的身份证号码一样。)<br>主健的分类?<br>根据主键字段的字段数量来划分:<br><strong>单一主键(推荐的,常用的。)</strong><br>复合主键(多个字段联合起来添加一个主键约束)(复合主键不建议使用，因为复合主键违背三范式。)根据主键性质来划分:<br>自然主键	<strong>：主键值最好就是一个和业务没有任何关系的自然数。</strong><br>业务主键</p>
+<p>​		主键值和系统的业务挂钩，例如:拿着银行卡的卡号做主键，拿着身份证号码作为主键。(不推荐用)最好不要拿着和业务挂钩的字段作为主键。因为以后的业务一旦发生改变的时候，主键值可能也需要随着发生变化，但有的时候没有办法变化，因为变化可能会导致主键值重复。</p>
+<p>*<strong>一张表的主键约束只能有1个。(必须记住)</strong></p>
+<h3 id="使用表级约束方式定义主键"><a href="#使用表级约束方式定义主键" class="headerlink" title="*使用表级约束方式定义主键:"></a>*使用表级约束方式定义主键:</h3><p>drop table if exists t_user;</p>
+<p>create table t_user (<br>id int,<br>username varchar (255),</p>
+<p>primary key (id)<br>);<br>insert into t_user(id, username) values(1,’zs ‘);</p>
+<p>insert into t_user(id,username) values(2 , ‘ ls ‘ ) ;</p>
+<p>insert into t_user(id,username) values(3 , ‘ws ‘ ) ;</p>
+<p>insert into t_user(id,username) values(4 , ‘cs ‘);</p>
+<p>select * from t_user;</p>
+<h5 id="mysql提供主健值自增-非常重要。"><a href="#mysql提供主健值自增-非常重要。" class="headerlink" title="mysql提供主健值自增:(非常重要。)"></a>mysql提供主健值自增:(非常重要。)</h5><p>&#x2F;&#x2F; id字段自动维护一个自增的数字，从1开始，以1递增。</p>
+<p>drop table if exists t_user;<br>create table t_user (<br>id int primary key auto_increment,</p>
+<p>username varchar (255)<br>) ;<br>insert into t_user (username) values ( ‘a ‘) ;</p>
+<p>insert into t_user (username) values ( ‘b’ );</p>
+<p>insert into t_user (username) values ( ‘c’) ;</p>
+<p>insert into t_user(username) values ( ‘d’ );</p>
+<p>insert into t_user (username) values ( ‘e’) ;</p>
+<p>insert into t_user (username) values ( ‘f’);</p>
+<p>select * from t_user;</p>
+<p>提示:oracle当中也提供了一个自增机制,叫做:序列(sequence)</p>
+<h3 id="13-4、外键约束"><a href="#13-4、外键约束" class="headerlink" title="13.4、外键约束"></a>13.4、外键约束</h3><p>关于外键约束的相关术语:<br>外键约束:foreign key<br>外键字段:添加有外键约束的字段外键值:外键字段中的每一个值。<br>业务背景:<br>请设计数据库表,用来维护学生和班级的信息?<br>第一种方案:一张表存储所有数据</p>
+<p>业务背景:<br>请设计数据库表,用来维护学生和班级的信息?<br>第一种方案:一张表存储所有数据<br>no (pk)					name					classno				classname</p>
+<p>1								zs							101						北京大兴区经济技术开发区亦庄二中高三1班<br>2								zs							101						北京大兴区经济技术开发区亦庄二中高三1班<br>3								zs							101						北京大兴区经济技术开发区亦庄二中高三1班<br>4								zs							101						北京大兴区经济技术开发区亦庄二中高三1班<br>5								zs							101						北京大兴区经济技术开发区亦庄二中高三1班</p>
+<p>第二种方案:两张表(班级表和学生表)t _class班级表<br>cno (pk)		cname			</p>
+<p>101				北京大兴区经济技术开发区亦庄二中高三1班<br>102				北京大兴区经济技术开发区亦庄二中高三2班</p>
+<p>t student学生表<br>sno (pk)   			sname					cno(该字段添加外键约束fk)<br>1							zs1							101<br>2							zs2							101<br>3							zs3							102<br>4							zs4							102<br>5							zs5							102</p>
+<p>*将以上表的建表语句写出来:<br>t_student中的classno字段引用t_class表中的cno字段，此时t_student表叫做子表。t_class表叫做父表。</p>
+<p>顺序要求:<br>删除数据的时候,先删除子表,再删除父表。</p>
+<p>添加数据的时候,先添加父表,在添加子表。</p>
+<p>创建表的时候,先创建父表,再创建子表。</p>
+<p>删除表的时候,先删除子表,在删除父表。</p>
+<p><strong>外键值可以为NULL?</strong><br><strong>外键可以为NULL.</strong><br>*<strong>外键字段引用其他表的某个字段的时候，被引用的字段必须是主键吗?</strong><br>注意:<strong>被引用的字段不一定是主键,但至少具有unique约束。</strong></p>
+<h2 id="14、存储引擎"><a href="#14、存储引擎" class="headerlink" title="14、存储引擎"></a>14、存储引擎</h2><h3 id="14-1、"><a href="#14-1、" class="headerlink" title="14.1、"></a>14.1、</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show create table `t_user`;</span><br><span class="line">+--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| Table  | Create Table                                                                                                                                                                                                 |</span><br><span class="line">+--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| t_user | CREATE TABLE `t_user` (</span><br><span class="line">  `id` int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `username` varchar(255) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |</span><br><span class="line">+--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意:在MysQ当中，凡是标识符是可以使用飘号括起来的。最好别用，不通用。<br>建表的时候可以指定存储引擎,也可以指定字符集。<br>mysq1默认使用的存储引擎是InnoDB方式。<br>默认采用的字符集是UTF8</p>
+<h3 id="14-2、什么是存储引擎呢"><a href="#14-2、什么是存储引擎呢" class="headerlink" title="14.2、什么是存储引擎呢?"></a>14.2、什么是存储引擎呢?</h3><p>存储引擎这个名字只有在mysq1中存在。(oracle中有对应的机制，但是不叫做存储引擎。oracle中没有特殊的名字，就是”表的存储方式”)<br>mysql支持很多存储引擎，每一个存储引擎都对应了一种不同的存储方式。每一个存储引擎都有自己的优缺点，需要在合适的时机选择合适的存储引擎。</p>
+<h3 id="14-3、查看当前mysql支持的存储引擎"><a href="#14-3、查看当前mysql支持的存储引擎" class="headerlink" title="14.3、查看当前mysql支持的存储引擎?"></a>14.3、查看当前mysql支持的存储引擎?</h3><p>show engines \G</p>
+<h3 id="14-4、常见的存储引擎"><a href="#14-4、常见的存储引擎" class="headerlink" title="14.4、常见的存储引擎?"></a>14.4、常见的存储引擎?</h3><h5 id="Engine-MyISAM"><a href="#Engine-MyISAM" class="headerlink" title="Engine: MyISAM"></a>Engine: MyISAM</h5><pre><code> Support: YES
+</code></pre>
+<p> Comment: MyISAM storage engine</p>
+<p><strong>Transactions: NO</strong><br>          XA: NO<br>  Savepoints: NO</p>
+<ul>
+<li>MylSAM存储引擎是MySQL最常用的引擎。<ul>
+<li>它管理的表具有以下特征:<ul>
+<li>使用三个文件表示每个表:<ul>
+<li><strong>格式文件―存储表结构的定义〈 mytable.frm)</strong> </li>
+<li><strong>数据文件一存储表行的内容( mytable.MYD)</strong></li>
+<li><strong>索引文件―存储表上索引( mytable.MYI)</strong></li>
+</ul>
+</li>
+<li>灵活的AUTO_INCREMENT字段处理</li>
+<li>可被转换为压缩、只读表来节省空间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>MyISAM这种存储引擎不支持事务。</strong><br>MyISAM是mysql最常用的存储引擎，但是这种引擎不是默认的。MyISAM采用三个文件组织一张表:<br>xxx.frm (存储格式的文件)<br>xxx.MYD(存储表中数据的文件)xxx.MYI (存储表中索引的文件)<br><strong>优点:可被压缩，节省存储空间。并且可以转换为只读表，提高检索效率。</strong></p>
+<p><strong>缺点:不支持事务。</strong></p>
+<h5 id="Engine-InnoDB"><a href="#Engine-InnoDB" class="headerlink" title="Engine: InnoDB"></a>Engine: InnoDB</h5><p> Support: DEFAULT<br> Comment: Supports transactions, row-level locking, and foreign keys</p>
+<p><strong>Transactions: YES</strong><br>          XA: YES<br>  Savepoints: YES</p>
+<ul>
+<li>InnoDB存储引擎是MySQL 的缺省引擎。</li>
+<li>它管理的表具有下列主要特征:<ul>
+<li>-每个InnoDB表在数据库目录中以.frm格式文件表示</li>
+<li>InnoDB表空间tablespace被用于存储表的内容。</li>
+<li>提供一组用来记录事务性活动的日志文件v</li>
+<li>用COMMIT(提交)、SAVEPOINT及ROLLBACK(回滚)</li>
+<li>支持事务处理</li>
+<li>提供全ACID兼容·</li>
+<li>在MySQL服务器崩溃后提供自动恢复-</li>
+<li>多版本（MNCC)和行级锁定</li>
+<li>支持外键及引用的完整性，包括级联删除和更新</li>
+</ul>
+</li>
+</ul>
+<p><strong>优点:支持事务、行级锁、外键等。这种存储引擎数据的安全得到保障</strong><br><strong>表的结构存储在xxx.frm文件中</strong><br><strong>数据存储在tablespace这样的表空间中（逻辑概念），无法被压缩，无法转换成只读。</strong></p>
+<p><strong>InnoDB支持级联删除和级联更新。</strong></p>
+<h5 id="Engine-MEMORY"><a href="#Engine-MEMORY" class="headerlink" title="Engine: MEMORY"></a>Engine: MEMORY</h5><p> Support: YES<br> Comment: Hash based, stored in memory, useful for temporary tables</p>
+<p><strong>Transactions: NO</strong><br>          XA: NO<br>  Savepoints: NO</p>
+<p><strong>缺点:不支持事务。数据容易丢失。因为所有数据和索引都是存储在内存当中的。优点:查询速度最快。</strong><br><strong>以前叫做HEPA引擎。</strong></p>
+<h2 id="15、事务（Transaction）"><a href="#15、事务（Transaction）" class="headerlink" title="15、事务（Transaction）"></a>15、事务（Transaction）</h2><h3 id="15-1、什么是事务"><a href="#15-1、什么是事务" class="headerlink" title="15.1、什么是事务?"></a>15.1、什么是事务?</h3><p>一个事务是一个完整的业务逻辑单元,不可再分。<br>比如:银行账户转账，从z账户向z账户转账10000.需要执行两条update语句:<br>update t_act set balance &#x3D; balance - 10000 where actno &#x3D; ‘act-001’;</p>
+<p>update t_act set balance &#x3D; balance + 10000 where actno &#x3D; ‘act-002 ‘ ;</p>
+<p>以上两条DM语句必须同时成功，或者同时失败，不允许出现一条成功，一条失败</p>
+<p>要想保证以上的两条DM.语句同时成功或者同时失败，那么就需要使用数据库的”事务机制”。</p>
+<h3 id="15-2、和事务相关的语句只有-DM语句。-insert-delete-update"><a href="#15-2、和事务相关的语句只有-DM语句。-insert-delete-update" class="headerlink" title="15.2、和事务相关的语句只有:DM语句。(insert delete update)"></a>15.2、和事务相关的语句只有:DM语句。(insert delete update)</h3><p><strong>为什么?因为它们这三个语句都是和数据库表当中的”数据”相关的。</strong></p>
+<p><strong>事务的存在是为了保证数据的完整性,安全性。</strong></p>
+<h3 id="15-3、假设所有的业务都能使用1条DM语句搞定，还需要事务机制吗"><a href="#15-3、假设所有的业务都能使用1条DM语句搞定，还需要事务机制吗" class="headerlink" title="15.3、假设所有的业务都能使用1条DM语句搞定，还需要事务机制吗?"></a>15.3、假设所有的业务都能使用1条DM语句搞定，还需要事务机制吗?</h3><p>不需要事务。</p>
+<p>但实际情况不是这样的，通常一个”事儿(事务【业务】)”需要多条DM语句共同联合完成。</p>
+<h3 id="15-4、事务的特性"><a href="#15-4、事务的特性" class="headerlink" title="15.4、事务的特性?"></a>15.4、事务的特性?</h3><p>事务包括四大特性:ACID<br>A:原子性:事务是最小的工作单元,不可再分。<br>c:一致性:事务必须保证多条DML语句同时成功或者同时失败。</p>
+<p>I:隔离性:事务A与事务B之间具有隔离。<br>D:持久性:持久性说的是最终数据必须持久化到硬盘文件中，事务才算成功的结束。</p>
+<h3 id="15-5、关于事务之间的隔离性"><a href="#15-5、关于事务之间的隔离性" class="headerlink" title="15.5、关于事务之间的隔离性"></a>15.5、关于事务之间的隔离性</h3><ul>
+<li>事务隔离性存在隔离级别,理论上隔离级别包括4个:<ul>
+<li>第一级别:读未提交( read uncommitted)<ul>
+<li>对方事务还没有提交，我们当前事务可以读取到对方未提交的数据。</li>
+<li>读未提交存在脏读(Dirty Read)现象:表示读到了脏的数据</li>
+</ul>
+</li>
+<li>第二级别:读己提交(read committed)<ul>
+<li>对方事务提交之后的数据我方可以读取到。读已提交存在的问题是:不可重复读。</li>
+</ul>
+</li>
+<li>第三级别:可重复读(repeatable read)<ul>
+<li>这种隔离级别解决了:不可重复读问题。</li>
+<li>这种隔离级别存在的问题是:读取到的数据是幻象。</li>
+</ul>
+</li>
+<li>第四级别:序列化读&#x2F;串行化读<ul>
+<li>解决了所有问题。</li>
+<li>效率低。需要事务排队。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>oracle数据库默认的隔离级别是:读已提交。mysql数据库默认的隔离级别是:可重复读。</li>
+<li>mysql默认的事务隔离级别是三挡起步:可重复读（repeatable read)</li>
+</ul>
+<h3 id="15-6、演示事务"><a href="#15-6、演示事务" class="headerlink" title="15.6、演示事务"></a>15.6、演示事务</h3><p>mysql事务默认情况下是自动提交的。<br><strong>(什么是自动提交﹖只要执行任意一条DMz语句则提交一次。)</strong></p>
+<p><strong>怎么关闭自动提交? start transaction;</strong></p>
+<p>*准备表:<br>drop table if exists t_user;</p>
+<p>create table t_user (<br>id int primary key auto_increment,</p>
+<p>username varchar (255)<br>);</p>
+<p><strong>演示: mysql中的事务是支持自动提交的，只要执行一条DML，则提交一次。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">insert into t_user(username) values(&#x27;zs&#x27;);</span><br><span class="line">select * from t_user;</span><br><span class="line">rollback;</span><br><span class="line">select * from t_user;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; insert into t_user(username) values(&#x27;zs&#x27;);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from t_user;</span><br><span class="line">+----+----------+</span><br><span class="line">| id | username |</span><br><span class="line">+----+----------+</span><br><span class="line">|  1 | zs       |</span><br><span class="line">+----+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; rollback;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from t_user;</span><br><span class="line">+----+----------+</span><br><span class="line">| id | username |</span><br><span class="line">+----+----------+</span><br><span class="line">|  1 | zs       |</span><br><span class="line">+----+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>演示:使用start transaction;关闭自动提交机制,<br>mysql&gt; start transaction ;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> start transaction ;</span><br><span class="line"> insert into t_user(username) values(&#x27;lsas&#x27;);</span><br><span class="line">select * from t_user;</span><br><span class="line">rollback;</span><br><span class="line">select * from t_user;</span><br><span class="line">mysql&gt;  insert into t_user(username) values(&#x27;lsas&#x27;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from t_user;</span><br><span class="line">+----+----------+</span><br><span class="line">| id | username |</span><br><span class="line">+----+----------+</span><br><span class="line">|  1 | zs       |</span><br><span class="line">|  2 | lsas     |</span><br><span class="line">+----+----------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; rollback;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">mysql&gt; select * from t_user;</span><br><span class="line">+----+----------+</span><br><span class="line">| id | username |</span><br><span class="line">+----+----------+</span><br><span class="line">|  1 | zs       |</span><br><span class="line">+----+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="15-7、使用两个事务演示以上的隔离级别"><a href="#15-7、使用两个事务演示以上的隔离级别" class="headerlink" title="15.7、使用两个事务演示以上的隔离级别"></a>15.7、使用两个事务演示以上的隔离级别</h3><h4 id="第一-演示read-uncommitted"><a href="#第一-演示read-uncommitted" class="headerlink" title="第一:演示read uncommitted"></a>第一:演示read uncommitted</h4><ul>
+<li><p>设置事务的隔离级别: </p>
+<ul>
+<li>set global transaction isolation level read uncommitted;</li>
+</ul>
+</li>
+<li><p>查看事务的全局隔离级别:</p>
+<ul>
+<li><p>mysql&gt; select @@global.transaction_isolation;(5.0)</p>
+</li>
+<li><p>mysql&gt; select @@global.transaction_isolation;(8.0)</p>
+</li>
+<li><p>&#96;&#96;&#96;<br>+——————————–+<br>| @@global.transaction_isolation |<br>+——————————–+<br>| READ-UNCOMMITTED               |<br>+——————————–+<br>1 row in set (0.00 sec)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">- mysql -uroot -proot</span><br><span class="line"></span><br><span class="line">- use bjpowernode;</span><br><span class="line"></span><br><span class="line">- start transaction ;</span><br><span class="line"></span><br><span class="line">- insert into t_user(username) value(&quot;SMITH1&quot;);</span><br><span class="line"></span><br><span class="line">- select * from t_user;</span><br><span class="line"></span><br><span class="line">**能够读到1窗口未提交的数据**</span><br><span class="line"></span><br><span class="line">![image-20221025204113351](./MySQL-2/1.png)</span><br><span class="line"></span><br><span class="line">第二:演示read committed</span><br><span class="line">第三:演示repeatable read</span><br><span class="line">第四:演示serializabie</span><br><span class="line"></span><br><span class="line">## 16、索引</span><br><span class="line"></span><br><span class="line">### 4.1、什么是索引?有什么用?</span><br><span class="line"></span><br><span class="line">- **索引就相当于一本书的目录，通过目录可以快速的找到对应的资源**。</span><br><span class="line">- 在数据库方面,查询一张表的时候有两种检索方式:</span><br><span class="line">  - 第一种方式:全表扫播</span><br><span class="line">  - 第二种方式:根据索引检索(效率很高)索引为什么可以提高检索效率呢?</span><br><span class="line">    - **其实最根本的原理是缩小了扫描的范围。**</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">索引虽然可以提高检索效率，但是不能随意的添加索引，因为索引也是数据库当中的对象，也需要数据库不断的维护。是有维护成本的。比如，表中的数据经常被修改这样就不适合添加索引，因为数据一旦修改，索引需要重新排序，进行维护。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">select ename ,sal from emp where ename = &#x27;SMITH&#x27;;</span><br><span class="line">当ename字段上没有添加索引的时候，以上sql语句会进行全表扫描，扫描ename字段中所有的值。</span><br><span class="line"></span><br><span class="line">当ename字段上添加索引的时候，以上sql语句会根据索引扫描，快速定位。</span><br><span class="line"></span><br><span class="line">### 4.2、怎么创建索引对象?怎么删除索引对象?</span><br><span class="line"></span><br><span class="line">创建索引对象:</span><br><span class="line">create index 索引名称 on 表名（字段名);</span><br><span class="line"></span><br><span class="line">删除索引对象:</span><br><span class="line">drop index索引名称on表名;</span><br><span class="line"></span><br><span class="line">### 4.3、什么时候考虑给字段添加索引?（满足什么条件)</span><br><span class="line"></span><br><span class="line">- 数据量庞大。（根据客户的需求，根据线上的环境)</span><br><span class="line">- 该字段很少的DM操作。(因为字段进行修改操作，索引也需要维护)*</span><br><span class="line">- 该字段经常出现在where子句中。（经常根据哪个字段查询)</span><br><span class="line"></span><br><span class="line">### 4.4、注意:主键和具有unique约束的字段自动会添加索引。</span><br><span class="line"></span><br><span class="line">根据主键查询效率较高。尽量根据主键检索。</span><br><span class="line"></span><br><span class="line">### 4.5、查看sql语句的执行计划:</span><br><span class="line"></span><br><span class="line">mysq1&gt; explain select ename ,sal from emp where  sal=5000;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>+—-+————-+——-+————+——+—————+——+———+——+——+———-+————-+<br>| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |<br>+—-+————-+——-+————+——+—————+——+———+——+——+———-+————-+<br>|  1 | SIMPLE      | emp   | NULL       | ALL  | NULL          | NULL | NULL    | NULL |   14 |    10.00 | Using where |<br>+—-+————-+——-+————+——+—————+——+———+——+——+———-+————-+</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">给薪资sal字段添加索引:</span><br><span class="line">create index emp_sal_index on emp (sal) ;</span><br><span class="line"></span><br><span class="line">mysq1&gt; explain select ename ,sal from emp where  sal=5000;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>+—-+————-+——-+————+——+—————+—————+———+——-+——+———-+——-+<br>| id | select_type | table | partitions | type | possible_keys | key           | key_len | ref   | rows | filtered | Extra |<br>+—-+————-+——-+————+——+—————+—————+———+——-+——+———-+——-+<br>|  1 | SIMPLE      | emp   | NULL       | ref  | emp_sal_index | emp_sal_index | 9       | const |    1 |   100.00 | NULL  |<br>+—-+————-+——-+————+——+—————+—————+———+——-+——+———-+——-+</p>
+<pre><code>
+### 4.6、索引底层采用的数据结构是:B +Tree
+
+### 4.7、索引的实现原理?
+
+通过B Tree缩小扫描范围，底层索引进行了排序，分区，索引会携带数据在表中的&quot;物理地址&quot;,**最终通过索引检索到数据之后，获取到关联的物理地址，通过物理地址定位表中的数据，效率是最高的。**
+select ename from emp where ename = &#39;SMITH&#39;;
+
+通过索引转换为:
+select ename from emp where物理地址= 0x3 ;
+
+![image-20221025211620681](./MySQL-2/2.png)
+
+### 4.8、索引的分类?
+
+单一索引:给单个字段添加索引
+复合索引:给多个字段联合起来添加1个索引主键索引:主键上会自动添加索引
+唯一索引:有unique约束的字段上会自动添加索引
+
+### 4.9、索引什么时候失效?
+
+select ename from emp where enane like &#39;%A%&#39;;
+**模糊查询的时候，第一个通配符使用的是8，这个时候索引是失效的**
+</code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Barry</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/10/26/MySQL-2/">http://example.com/2022/10/26/MySQL-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Barry</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/9d/wallhaven-9d59xx.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/26/MySQL-3/"><img class="prev-cover" src="https://w.wallhaven.cc/full/ex/wallhaven-exo2gr.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MySQL(3)</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/26/MySQL-1/"><img class="next-cover" src="https://w.wallhaven.cc/full/l8/wallhaven-l8qjwp.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MySQL(1)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/10/26/MySQL-3/" title="MySQL(3)"><img class="cover" src="https://w.wallhaven.cc/full/ex/wallhaven-exo2gr.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-26</div><div class="title">MySQL(3)</div></div></a></div><div><a href="/2022/10/26/MySQL-1/" title="MySQL(1)"><img class="cover" src="https://w.wallhaven.cc/full/l8/wallhaven-l8qjwp.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-26</div><div class="title">MySQL(1)</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/myfile/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Barry</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%85%B3%E4%BA%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E7%9A%84%E5%8E%BB%E9%87%8D"><span class="toc-number">1.</span> <span class="toc-text">1、关于查询结果集的去重</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-%E7%BB%9F%E8%AE%A1%E5%B2%97%E4%BD%8D%E7%9A%84%E6%95%B0%E9%87%8F"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">案例:统计岗位的数量?</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.</span> <span class="toc-text">2、连接查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.1.</span> <span class="toc-text">2.1、什么是连接查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2%E3%80%81%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">2.2、连接查询的分类?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3%E3%80%81%E5%9C%A8%E8%A1%A8%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%E6%96%B9%E9%9D%A2%E6%9C%89%E4%B8%80%E7%A7%8D%E7%8E%B0%E8%B1%A1%E8%A2%AB%E7%A7%B0%E4%B8%BA-%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF%E7%8E%B0%E8%B1%A1%E3%80%82%EF%BC%88%E7%AC%9B%E5%8D%A1%E5%B0%94%E4%B9%98%E7%A7%AF%E7%8E%B0%E8%B1%A1"><span class="toc-number">2.3.</span> <span class="toc-text">2.3、在表的连接查询方面有一种现象被称为:笛卡尔积现象。（笛卡尔乘积现象)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%A1%A8%E7%9A%84%E5%88%AB%E5%90%8D"><span class="toc-number">2.3.1.</span> <span class="toc-text">关于表的别名:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4%E3%80%81%E6%80%8E%E4%B9%88%E9%81%BF%E5%85%8D%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF%E7%8E%B0%E8%B1%A1-%E5%BD%93%E7%84%B6%E6%98%AF%E5%8A%A0%E6%9D%A1%E4%BB%B6%E8%BF%9B%E8%A1%8C%E8%BF%87%E6%BB%A4%E3%80%82"><span class="toc-number">2.4.</span> <span class="toc-text">2.4、怎么避免笛卡尔积现象?当然是加条件进行过滤。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5%E3%80%81%E5%86%85%E8%BF%9E%E6%8E%A5%E4%B9%8B%E7%AD%89%E5%80%BC%E8%BF%9E%E6%8E%A5-%E6%9C%80%E5%A4%A7%E7%89%B9%E7%82%B9%E6%98%AF-%E6%9D%A1%E4%BB%B6%E6%98%AF%E7%AD%89%E9%87%8F%E5%85%B3%E7%B3%BB%E3%80%82"><span class="toc-number">2.5.</span> <span class="toc-text">2.5、内连接之等值连接:最大特点是:条件是等量关系。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6%E3%80%81%E5%86%85%E8%BF%9E%E6%8E%A5%E4%B9%8B%E9%9D%9E%E7%AD%89%E5%80%BC%E8%BF%9E%E6%8E%A5-%E6%9C%80%E5%A4%A7%E7%9A%84%E7%89%B9%E7%82%B9%E6%98%AF-%E8%BF%9E%E6%8E%A5%E6%9D%A1%E4%BB%B6%E4%B8%AD%E7%9A%84%E5%85%B3%E7%B3%BB%E6%98%AF%E9%9D%9E%E7%AD%89%E9%87%8F%E5%85%B3%E7%B3%BB%E3%80%82"><span class="toc-number">2.6.</span> <span class="toc-text">2.6、内连接之非等值连接:最大的特点是:连接条件中的关系是非等量关系。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7%E3%80%81%E8%87%AA%E8%BF%9E%E6%8E%A5-%E6%9C%80%E5%A4%A7%E7%9A%84%E7%89%B9%E7%82%B9%E6%98%AF-%E4%B8%80%E5%BC%A0%E8%A1%A8%E7%9C%8B%E5%81%9A%E4%B8%A4%E5%BC%A0%E8%A1%A8%E3%80%82%E8%87%AA%E5%B7%B1%E8%BF%9E%E6%8E%A5%E8%87%AA%E5%B7%B1%E3%80%82"><span class="toc-number">2.7.</span> <span class="toc-text">2.7、自连接:最大的特点是:一张表看做两张表。自己连接自己。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8%E3%80%81%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.8.</span> <span class="toc-text">2.8、外连接?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-9%E3%80%81%E4%B8%89%E5%BC%A0%E8%A1%A8%E6%80%8E%E4%B9%88%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.9.</span> <span class="toc-text">2.9、三张表怎么连接查询?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.</span> <span class="toc-text">3、子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.1.</span> <span class="toc-text">3.1、什么是子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2%E3%80%81where%E5%AD%90%E8%AF%AD%E5%8F%A5%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.2.</span> <span class="toc-text">3.2、where子语句中使用子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3%E3%80%81from%E5%90%8E%E9%9D%A2%E5%B5%8C%E5%A5%97%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.3.</span> <span class="toc-text">3.3、from后面嵌套子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4%E3%80%81%E5%9C%A8select%E5%90%8E%E9%9D%A2%E5%B5%8C%E5%A5%97%E5%AD%90%E6%9F%A5%E8%AF%A2%E3%80%82"><span class="toc-number">3.4.</span> <span class="toc-text">3.4、在select后面嵌套子查询。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81union-%E5%8F%AF%E4%BB%A5%E5%B0%86%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E7%9B%B8%E5%8A%A0"><span class="toc-number">4.</span> <span class="toc-text">4、union (可以将查询结果集相加)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81limit%E3%80%88%E9%87%8D%E7%82%B9%E4%B8%AD%E7%9A%84%E9%87%8D%E7%82%B9-%E4%BB%A5%E5%90%8E%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%85%A8%E9%9D%A0%E5%AE%83%E4%BA%86%E3%80%82"><span class="toc-number">5.</span> <span class="toc-text">5、limit〈重点中的重点,以后分页查询全靠它了。)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1%E3%80%811imit%E6%98%AFmysq1%E7%89%B9%E6%9C%89%E7%9A%84%EF%BC%8C%E5%85%B6%E4%BB%96%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%B2%A1%E6%9C%89%EF%BC%8C%E4%B8%8D%E9%80%9A%E7%94%A8%E3%80%82-oracle%E4%B8%AD%E6%9C%89%E4%B8%80%E4%B8%AA%E7%9B%B8%E5%90%8C%E7%9A%84%E6%9C%BA%E5%88%B6%EF%BC%8C%E5%8F%AB%E5%81%9Arownum"><span class="toc-number">5.1.</span> <span class="toc-text">5.1、1imit是mysq1特有的，其他数据库中没有，不通用。(oracle中有一个相同的机制，叫做rownum)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2%E3%80%81limit%E5%8F%96%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E7%9A%84%E9%83%A8%E5%88%86%E6%95%B0%E6%8D%AE-%E8%BF%99%E6%97%B6%E5%AE%83%E7%9A%84%E4%BD%9C%E7%94%A8%E3%80%82"><span class="toc-number">5.2.</span> <span class="toc-text">5.2、limit取结果集中的部分数据,这时它的作用。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3%E3%80%81%E8%AF%AD%E6%B3%95%E6%9C%BA%E5%88%B6"><span class="toc-number">5.3.</span> <span class="toc-text">5.3、语法机制:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4%E3%80%81limit%E6%98%AFsql%E8%AF%AD%E5%8F%A5%E6%9C%80%E5%90%8E%E6%89%A7%E8%A1%8C%E7%9A%84%E4%B8%80%E4%B8%AA%E7%8E%AF%E8%8A%82"><span class="toc-number">5.4.</span> <span class="toc-text">5.4、limit是sql语句最后执行的一个环节:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5%E3%80%81%E6%A1%88%E4%BE%8B-%E6%89%BE%E5%87%BA%E5%B7%A5%E8%B5%84%E6%8E%92%E5%90%8D%E5%9C%A8%E7%AC%AC4%E5%88%B0%E7%AC%AC9%E5%90%8D%E7%9A%84%E5%91%98%E5%B7%A5"><span class="toc-number">5.5.</span> <span class="toc-text">5.5、案例:找出工资排名在第4到第9名的员工?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6%E3%80%81%E9%80%9A%E7%94%A8%E7%9A%84%E6%A0%87%E5%87%86%E5%88%86%E9%A1%B5sql"><span class="toc-number">5.6.</span> <span class="toc-text">5.6、通用的标准分页sql ?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%88%9B%E5%BB%BA%E8%A1%A8"><span class="toc-number">6.</span> <span class="toc-text">6、创建表:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81insert%E8%AF%AD%E5%8F%A5%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-number">7.</span> <span class="toc-text">7、insert语句插入数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%81%E8%A1%A8%E7%9A%84%E5%A4%8D%E5%88%B6"><span class="toc-number">8.</span> <span class="toc-text">8、表的复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9%E3%80%81%E5%B0%86%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8F%92%E5%85%A5%E5%88%B0%E4%B8%80%E5%BC%A0%E8%A1%A8%E4%B8%AD"><span class="toc-number">9.</span> <span class="toc-text">9、将查询结果插入到一张表中?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E3%80%81%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE-update"><span class="toc-number">10.</span> <span class="toc-text">10、修改数据:update</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11%E3%80%81%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="toc-number">11.</span> <span class="toc-text">11、删除数据?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12%E3%80%81"><span class="toc-number">12.</span> <span class="toc-text">12、</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13%E3%80%81%E7%BA%A6%E6%9D%9F-Constraint"><span class="toc-number">13.</span> <span class="toc-text">13、约束(Constraint)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#13-1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%A6%E6%9D%9F-%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BA%A6%E6%9D%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E5%91%A2"><span class="toc-number">13.1.</span> <span class="toc-text">13.1、什么是约束?常见的约束有哪些呢?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-2%E3%80%81%E5%94%AF%E4%B8%80%E6%80%A7%E7%BA%A6%E6%9D%9F-unique"><span class="toc-number">13.2.</span> <span class="toc-text">13.2、唯一性约束(unique)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-3%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="toc-number">13.3.</span> <span class="toc-text">13.3主键约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%A1%A8%E7%BA%A7%E7%BA%A6%E6%9D%9F%E6%96%B9%E5%BC%8F%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%94%AE"><span class="toc-number">13.4.</span> <span class="toc-text">*使用表级约束方式定义主键:</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#mysql%E6%8F%90%E4%BE%9B%E4%B8%BB%E5%81%A5%E5%80%BC%E8%87%AA%E5%A2%9E-%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81%E3%80%82"><span class="toc-number">13.4.0.1.</span> <span class="toc-text">mysql提供主健值自增:(非常重要。)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-4%E3%80%81%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="toc-number">13.5.</span> <span class="toc-text">13.4、外键约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14%E3%80%81%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-number">14.</span> <span class="toc-text">14、存储引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#14-1%E3%80%81"><span class="toc-number">14.1.</span> <span class="toc-text">14.1、</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-2%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E5%91%A2"><span class="toc-number">14.2.</span> <span class="toc-text">14.2、什么是存储引擎呢?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-3%E3%80%81%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8Dmysql%E6%94%AF%E6%8C%81%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-number">14.3.</span> <span class="toc-text">14.3、查看当前mysql支持的存储引擎?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-4%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-number">14.4.</span> <span class="toc-text">14.4、常见的存储引擎?</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Engine-MyISAM"><span class="toc-number">14.4.0.1.</span> <span class="toc-text">Engine: MyISAM</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Engine-InnoDB"><span class="toc-number">14.4.0.2.</span> <span class="toc-text">Engine: InnoDB</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Engine-MEMORY"><span class="toc-number">14.4.0.3.</span> <span class="toc-text">Engine: MEMORY</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15%E3%80%81%E4%BA%8B%E5%8A%A1%EF%BC%88Transaction%EF%BC%89"><span class="toc-number">15.</span> <span class="toc-text">15、事务（Transaction）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#15-1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E5%8A%A1"><span class="toc-number">15.1.</span> <span class="toc-text">15.1、什么是事务?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-2%E3%80%81%E5%92%8C%E4%BA%8B%E5%8A%A1%E7%9B%B8%E5%85%B3%E7%9A%84%E8%AF%AD%E5%8F%A5%E5%8F%AA%E6%9C%89-DM%E8%AF%AD%E5%8F%A5%E3%80%82-insert-delete-update"><span class="toc-number">15.2.</span> <span class="toc-text">15.2、和事务相关的语句只有:DM语句。(insert delete update)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-3%E3%80%81%E5%81%87%E8%AE%BE%E6%89%80%E6%9C%89%E7%9A%84%E4%B8%9A%E5%8A%A1%E9%83%BD%E8%83%BD%E4%BD%BF%E7%94%A81%E6%9D%A1DM%E8%AF%AD%E5%8F%A5%E6%90%9E%E5%AE%9A%EF%BC%8C%E8%BF%98%E9%9C%80%E8%A6%81%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6%E5%90%97"><span class="toc-number">15.3.</span> <span class="toc-text">15.3、假设所有的业务都能使用1条DM语句搞定，还需要事务机制吗?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-4%E3%80%81%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">15.4.</span> <span class="toc-text">15.4、事务的特性?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-5%E3%80%81%E5%85%B3%E4%BA%8E%E4%BA%8B%E5%8A%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E9%9A%94%E7%A6%BB%E6%80%A7"><span class="toc-number">15.5.</span> <span class="toc-text">15.5、关于事务之间的隔离性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-6%E3%80%81%E6%BC%94%E7%A4%BA%E4%BA%8B%E5%8A%A1"><span class="toc-number">15.6.</span> <span class="toc-text">15.6、演示事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-7%E3%80%81%E4%BD%BF%E7%94%A8%E4%B8%A4%E4%B8%AA%E4%BA%8B%E5%8A%A1%E6%BC%94%E7%A4%BA%E4%BB%A5%E4%B8%8A%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-number">15.7.</span> <span class="toc-text">15.7、使用两个事务演示以上的隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80-%E6%BC%94%E7%A4%BAread-uncommitted"><span class="toc-number">15.7.1.</span> <span class="toc-text">第一:演示read uncommitted</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/MySQL-3/" title="MySQL(3)"><img src="https://w.wallhaven.cc/full/ex/wallhaven-exo2gr.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL(3)"/></a><div class="content"><a class="title" href="/2022/10/26/MySQL-3/" title="MySQL(3)">MySQL(3)</a><time datetime="2022-10-26T02:08:30.000Z" title="发表于 2022-10-26 10:08:30">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/MySQL-2/" title="MySQL(2)"><img src="https://w.wallhaven.cc/full/9d/wallhaven-9d59xx.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL(2)"/></a><div class="content"><a class="title" href="/2022/10/26/MySQL-2/" title="MySQL(2)">MySQL(2)</a><time datetime="2022-10-26T02:08:16.000Z" title="发表于 2022-10-26 10:08:16">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/MySQL-1/" title="MySQL(1)"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8qjwp.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL(1)"/></a><div class="content"><a class="title" href="/2022/10/26/MySQL-1/" title="MySQL(1)">MySQL(1)</a><time datetime="2022-10-26T02:08:05.000Z" title="发表于 2022-10-26 10:08:05">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/JDBC/" title="JDBC"><img src="https://w.wallhaven.cc/full/kx/wallhaven-kx9d56.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JDBC"/></a><div class="content"><a class="title" href="/2022/10/26/JDBC/" title="JDBC">JDBC</a><time datetime="2022-10-26T02:07:38.000Z" title="发表于 2022-10-26 10:07:38">2022-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/26/juc-1/" title="juc(1)"><img src="https://w.wallhaven.cc/full/9d/wallhaven-9d5gpw.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="juc(1)"/></a><div class="content"><a class="title" href="/2022/10/26/juc-1/" title="juc(1)">juc(1)</a><time datetime="2022-10-26T02:06:04.000Z" title="发表于 2022-10-26 10:06:04">2022-10-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Barry</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2022/10/26/MySQL-2/'
+    this.page.identifier = '/2022/10/26/MySQL-2/'
+    this.page.title = 'MySQL(2)'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+
+  document.getElementById('darkmode').addEventListener('click', () => {
+    setTimeout(() => window.disqusReset(), 200)
+  })
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><div class="aplayer no-destroy" data-id="60198" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
